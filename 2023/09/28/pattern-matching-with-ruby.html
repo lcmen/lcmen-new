@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
+    <title>Pattern matching with Ruby - Lucas Mendelowski</title>
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css" media="screen">
+    <script src="/assets/js/main.js"></script>
+  </head>
+  <body>
+    <div id="main">
+      <div class="container mx-auto">
+  <div class="flex items-center justify-between py-6 lg:py-10">
+    <a href="/" class="flex items-center">
+      <span href="/" class="mr-2">
+        <img src="/assets/images/logo.svg" alt="logo" class="mr-2" />
+      </span>
+    </a>
+    <div class="flex items-center lg:hidden">
+      <button id="toggle-menu" class="group z-50">
+        <svg
+          width="24"
+          height="15"
+          xmlns="http://www.w3.org/2000/svg"
+          class="fill-current text-primary transition-transform group-[.active]:fill-white group-[.active]:rotate-90"
+        >
+          <g fill-rule="evenodd">
+            <rect width="24" height="3" />
+            <rect y="6" width="24" height="3" />
+            <rect y="12" width="24" height="3" />
+          </g>
+        </svg>
+      </button>
+    </div>
+    <div class="hidden lg:block">
+      <ul class="flex items-center">
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            >Intro</a
+          >
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/blog"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            >Blog</a
+          >
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/til"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            >Til</a
+          >
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/uses"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+          >
+            Uses
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+      <div
+  id="menu"
+  class="pointer-events-none fixed inset-0 z-30 flex bg-black bg-opacity-80 opacity-0 transition-opacity lg:hidden">
+  <div class="ml-auto w-2/3 bg-green p-4 md:w-1/3">
+    <ul class="mt-8 flex flex-col">
+      <li class="">
+        <a
+          href="/"
+          class="mb-3 block px-2 font-body text-lg font-medium text-white"
+          >Intro</a
+        >
+      </li>
+
+      <li class="">
+        <a
+          href="/blog"
+          class="mb-3 block px-2 font-body text-lg font-medium text-white"
+          >Blog</a
+        >
+      </li>
+
+      <li class="">
+        <a
+          href="/uses"
+          class="mb-3 block px-2 font-body text-lg font-medium text-white"
+          >Uses</a
+        >
+      </li>
+
+      <li class="">
+        <a
+          href="/contact"
+          class="mb-3 block px-2 font-body text-lg font-medium text-white"
+          >Contact</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+      <div>
+        <div class="container mx-auto">
+          <div class="border-b border-grey-lighter pb-8 sm:pb-12">
+  <p class="mb-4">
+    
+      
+
+  <span class="inline-block rounded-full bg-tag-red-accent px-2 py-1 font-body text-sm text-tag-red">
+    ruby
+  </span>
+
+
+    
+  </p>
+  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
+    Pattern matching with Ruby
+  </h2>
+  <div class="flex items-center pt-4">
+    <p class="pr-2 font-body font-light text-primary">
+      September 28, 2023
+    </p>
+    <span class="font-body text-grey dark:text-white">//</span>
+    <p class="pl-2 font-body font-light text-primary">
+      3 min read
+    </p>
+  </div>
+</div>
+<article class="prose prose max-w-none border-b border-grey-lighter py-8 sm:py-12">
+  <p>With version 2.7, Ruby introduced a pattern matching, the feature that simplifies matching and destructuring data to make the code more concise, readable, and robust.</p>
+
+<p>Pattern matching, a concept borrowed from functional programming languages, enables developers to match values based on their structure and extract elements with ease. This powerful addition to the Ruby toolkit opens up new avenues for expressing complex logic in a more natural and elegant way. Whether you’re a seasoned Ruby developer or just getting started, understanding and mastering pattern matching is essential for writing clean, maintainable, and efficient code.
+So, whether you’re looking to level up your Ruby skills or just curious about what pattern matching has to offer, let’s dive in and unlock the power of pattern matching in Ruby 2.7.</p>
+
+<p>Your code will thank you!</p>
+
+<h2 id="matching-against-array-or-hashes">Matching against array or hashes</h2>
+
+<p>In Ruby, pattern matching can be done using the <code class="language-plaintext highlighter-rouge">in</code> or <code class="language-plaintext highlighter-rouge">=&gt;</code> (only available in Ruby &gt;= 3) operators. Below are a couple of examples illustrating the power of this approach:</p>
+
+<h3 id="matching-with-case-and-in">Matching with <code class="language-plaintext highlighter-rouge">case</code> and <code class="language-plaintext highlighter-rouge">in</code></h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># assuming api.get returns hashes like:</span>
+<span class="c1">#   - { success: true|false, data: Object }</span>
+<span class="c1">#   - { error: true, message: String }</span>
+
+<span class="k">case</span> <span class="n">api</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">in</span> <span class="p">{</span> <span class="ss">success: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">data: </span><span class="n">user</span> <span class="p">}</span>
+<span class="nb">p</span> <span class="n">user</span>
+<span class="k">in</span> <span class="p">{</span> <span class="ss">success: </span><span class="kp">false</span><span class="p">,</span> <span class="ss">message: </span><span class="n">error</span> <span class="p">}</span>
+<span class="nb">p</span> <span class="n">error</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>In this example, we use a <code class="language-plaintext highlighter-rouge">case</code> statement with the <code class="language-plaintext highlighter-rouge">in</code> operator to match different patterns within the returned hash from <code class="language-plaintext highlighter-rouge">api.get</code> method. Depending on the <code class="language-plaintext highlighter-rouge">success</code> field, we can extract different values.</p>
+
+<h3 id="matching-with--available-only-in-ruby-30-and-above">Matching with <code class="language-plaintext highlighter-rouge">=&gt;</code> (available only in Ruby 3.0 and above):</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">success: </span><span class="kp">true</span> <span class="p">}</span>
+<span class="n">result</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">success: </span><span class="p">}</span>
+<span class="n">success</span> <span class="c1"># true</span>
+</code></pre></div></div>
+
+<p>In this example, we create a hash called <code class="language-plaintext highlighter-rouge">result</code> and use the <code class="language-plaintext highlighter-rouge">=&gt;</code> operator to match it against the hash with <code class="language-plaintext highlighter-rouge">success</code> key, and extracting value under that key.</p>
+
+<h2 id="matching-multiple-patterns">Matching multiple patterns</h2>
+
+<p>You can match against multiple patterns within a single block by using the <code class="language-plaintext highlighter-rouge">|</code> operator:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># assuming api.get might return hashes in one of the following schemas:</span>
+<span class="c1">#   - { success: true|false, data: Object }</span>
+<span class="c1">#   - { error: true, message: String }</span>
+<span class="c1">#   - { error: true, data: string }</span>
+
+<span class="k">case</span> <span class="n">api</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">in</span> <span class="p">{</span> <span class="ss">success: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">data: </span><span class="n">user</span> <span class="p">}</span>
+  <span class="nb">p</span> <span class="n">user</span>
+<span class="k">in</span> <span class="p">{</span> <span class="ss">success: </span><span class="kp">false</span><span class="p">,</span> <span class="ss">data: </span><span class="n">error</span> <span class="p">}</span> <span class="o">|</span> <span class="p">{</span> <span class="ss">error: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">message: </span><span class="n">error</span> <span class="p">}</span>
+  <span class="nb">p</span> <span class="n">error</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h2 id="assigning-matched-values-to-variables">Assigning matched values to variables</h2>
+
+<p>To assign the matched value from <code class="language-plaintext highlighter-rouge">case</code> / <code class="language-plaintext highlighter-rouge">in</code> construct to a variable, you can use the <code class="language-plaintext highlighter-rouge">=&gt;</code> operator:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">api</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">in</span> <span class="p">{</span> <span class="ss">success: </span><span class="kp">true</span><span class="o">|</span><span class="kp">false</span><span class="p">,</span> <span class="ss">data: </span><span class="no">Object</span> <span class="p">}</span> <span class="o">=&gt;</span> <span class="n">response</span>
+  <span class="nb">p</span> <span class="n">response</span><span class="p">[</span><span class="ss">:data</span><span class="p">]</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>This allows you to work with the matched value conveniently by exposing it under variable with the specified name (<code class="language-plaintext highlighter-rouge">response</code> in this case).</p>
+
+<h2 id="matching-the-same-value-across-patterns">Matching the same value across patterns</h2>
+
+<p>Use the <code class="language-plaintext highlighter-rouge">^</code> (pin operator) to match the same value across different fields:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="p">[</span><span class="n">api</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'active'</span><span class="p">),</span> <span class="n">api</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'invited'</span><span class="p">)]</span>
+<span class="k">in</span> <span class="p">[</span><span class="n">number</span><span class="p">,</span> <span class="o">^</span><span class="n">number</span><span class="p">]</span>
+  <span class="nb">puts</span> <span class="s2">"The same number of active users as invited"</span>
+<span class="k">else</span>
+  <span class="nb">puts</span> <span class="s2">"Number are not the same"</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Here, we ensure that the <code class="language-plaintext highlighter-rouge">number</code> in both positions of the array is the same.</p>
+
+<h2 id="ignoring-values">Ignoring values</h2>
+
+<p>Sometimes, you might want to ignore specific values. You can use the underscore (<code class="language-plaintext highlighter-rouge">_</code>) for this purpose:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">api</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'active'</span><span class="p">)</span>
+<span class="k">in</span> <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">user</span><span class="p">]</span>
+  <span class="nb">puts</span> <span class="s2">"A second active user is: </span><span class="si">#{</span><span class="n">user</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h2 id="matching-against-classes">Matching against classes</h2>
+
+<p>In Ruby, pattern matching isn’t limited to arrays and hashes. You can also utilize it with custom classes. To make a class available for pattern matching operators, you need to implement two methods:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">deconstruct</code> for array-style matching</li>
+  <li><code class="language-plaintext highlighter-rouge">deconstruct_key</code> for hash-style matching</li>
+</ul>
+
+<p>These methods allow you to specify how the class instance should be deconstructed when pattern matching is applied.</p>
+
+<p>Here’s an example of a class named <code class="language-plaintext highlighter-rouge">Response</code> that implements these methods to make it pattern-matchable:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Response</span> <span class="o">=</span> <span class="no">Struct</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">:success</span><span class="p">,</span> <span class="ss">:result</span><span class="p">)</span> <span class="k">do</span>
+  <span class="k">def</span> <span class="nf">deconstruct</span>
+    <span class="p">[</span><span class="n">success</span><span class="p">,</span> <span class="n">result</span><span class="p">]</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">deconstruct_key</span>
+    <span class="p">{</span> <span class="ss">success: </span><span class="n">success</span><span class="p">,</span> <span class="ss">result: </span><span class="n">result</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>In this <code class="language-plaintext highlighter-rouge">Response</code> class, we’ve defined the <code class="language-plaintext highlighter-rouge">deconstruct</code> method, which returns an array, and the <code class="language-plaintext highlighter-rouge">deconstruct_key</code> method, which returns a hash. These methods specify how an instance of the <code class="language-plaintext highlighter-rouge">Response</code> class should be deconstructed when pattern matched using array-style or hash-style patterns.</p>
+
+<p>Let’s try the pattern matching with instances of our <code class="language-plaintext highlighter-rouge">Response</code> class:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">response</span> <span class="o">=</span> <span class="no">Response</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="kp">true</span><span class="p">,</span> <span class="p">{</span> <span class="ss">id: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"Jon Snow"</span> <span class="p">})</span>
+
+<span class="k">case</span> <span class="n">response</span>
+<span class="k">in</span> <span class="p">[</span><span class="kp">true</span><span class="p">,</span> <span class="n">user</span><span class="p">]</span>
+  <span class="nb">p</span> <span class="n">user</span>
+<span class="k">end</span>
+
+<span class="k">case</span> <span class="n">response</span>
+<span class="k">in</span> <span class="p">{</span> <span class="ss">success: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">result: </span><span class="n">user</span> <span class="p">}</span>
+  <span class="nb">p</span> <span class="n">user</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Pattern matching in Ruby is a powerful tool that simplifies data extraction and enhances code clarity. It’s a valuable addition to your Ruby toolkit, enabling you to write cleaner, and more expressive code.</p>
+
+</article>
+
+        </div>
+      </div>
+
+      <footer class="container mx-auto">
+  <div class="flex flex-col items-center justify-between border-t border-grey-lighter py-10 sm:flex-row sm:py-12">
+    <p class="font-body font-light text-primary">
+      &copy; 2023 Lucas Mendelowski
+    </p>
+    <div class="flex items-center pt-5 gap-5 sm:pt-0">
+      <a href="https://www.linkedin.com/in/lucasmendelowski/" target="_blank">
+        <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-linkedin"></i>
+      </a>
+
+      <a href="https://github.com/lcmen" target="_blank">
+        <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-github"></i>
+      </a>
+
+      <a href="https://twitter.com/lcmen_" target="_blank">
+        <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-twitter"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>

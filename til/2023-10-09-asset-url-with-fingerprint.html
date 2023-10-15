@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
+    <title>Fingerprinted URL to Ruby on Rails asset files - Lucas Mendelowski</title>
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css" media="screen">
+    <script src="/assets/js/main.js"></script>
+  </head>
+  <body>
+    <div id="main">
+      <div class="container mx-auto">
+  <div class="flex items-center justify-between py-6 lg:py-10">
+    <a href="/" class="flex items-center">
+      <span href="/" class="mr-2">
+        <img src="/assets/images/logo.svg" alt="logo" class="mr-2" />
+      </span>
+    </a>
+    <div class="flex items-center lg:hidden">
+      <button id="toggle-menu" class="group z-50">
+        <svg
+          width="24"
+          height="15"
+          xmlns="http://www.w3.org/2000/svg"
+          class="fill-current text-primary transition-transform group-[.active]:fill-white group-[.active]:rotate-90"
+        >
+          <g fill-rule="evenodd">
+            <rect width="24" height="3" />
+            <rect y="6" width="24" height="3" />
+            <rect y="12" width="24" height="3" />
+          </g>
+        </svg>
+      </button>
+    </div>
+    <div class="hidden lg:block">
+      <ul class="flex items-center">
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            >Intro</a
+          >
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/blog"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            >Blog</a
+          >
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/til"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            >Til</a
+          >
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/uses"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+          >
+            Uses
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+      <div
+  id="menu"
+  class="pointer-events-none fixed inset-0 z-30 flex bg-black bg-opacity-80 opacity-0 transition-opacity lg:hidden">
+  <div class="ml-auto w-2/3 bg-green p-4 md:w-1/3">
+    <ul class="mt-8 flex flex-col">
+      <li class="">
+        <a
+          href="/"
+          class="mb-3 block px-2 font-body text-lg font-medium text-white"
+          >Intro</a
+        >
+      </li>
+
+      <li class="">
+        <a
+          href="/blog"
+          class="mb-3 block px-2 font-body text-lg font-medium text-white"
+          >Blog</a
+        >
+      </li>
+
+      <li class="">
+        <a
+          href="/uses"
+          class="mb-3 block px-2 font-body text-lg font-medium text-white"
+          >Uses</a
+        >
+      </li>
+
+      <li class="">
+        <a
+          href="/contact"
+          class="mb-3 block px-2 font-body text-lg font-medium text-white"
+          >Contact</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+      <div>
+        <div class="container mx-auto">
+          <p>To get relative URL to application’s assets with their fingerprints, <code class="language-plaintext highlighter-rouge">ActionController::Base.helpers#asset_url</code> method can be used.
+It accepts a file name, and prints the relative path to the file, e.g.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):002:0&gt; ActionController::Base.helpers.asset_path("application.js")
+=&gt; "/assets/application-8bf8a8aca6320619e6e4a215ae3f613d9cc3aa269397aa3fc93b821b1c56319c.js"
+</code></pre></div></div>
+
+<p>If the absolute URL is needed, then <code class="language-plaintext highlighter-rouge">host</code> option must be provided, e.g.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):004:0&gt; ActionController::Base.helpers.asset_path("application.js", host: "http://localhost:3000")
+=&gt; "http://localhost:3000/assets/application-8bf8a8aca6320619e6e4a215ae3f613d9cc3aa269397aa3fc93b821b1c56319c.js"
+</code></pre></div></div>
+
+<p>Since, providing <code class="language-plaintext highlighter-rouge">host</code> manually can be cumbersome, it can be automated with a simple helper:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">asset_host</span>
+  <span class="vi">@host</span> <span class="o">||=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">configuration</span><span class="p">.</span><span class="nf">asset_host</span> <span class="o">||</span> <span class="n">default_host</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">default_host</span>
+  <span class="n">opts</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">default_url_options</span><span class="p">.</span><span class="nf">dup</span><span class="p">.</span><span class="nf">tap</span> <span class="k">do</span> <span class="o">|</span><span class="n">options</span><span class="o">|</span>
+    <span class="n">options</span><span class="p">[</span><span class="ss">:scheme</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="ss">:protocol</span><span class="p">)</span>
+  <span class="k">end</span>
+  <span class="no">URI</span><span class="o">::</span><span class="no">Generic</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="n">opts</span><span class="p">).</span><span class="nf">to_s</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Rails.configuration.asset_host</code> is usually set if public assets are hosted on some CDN server. Otherwise the method falls back
+to application’s host configured in <code class="language-plaintext highlighter-rouge">default_url_options</code>.</p>
+
+        </div>
+      </div>
+
+      <footer class="container mx-auto">
+  <div class="flex flex-col items-center justify-between border-t border-grey-lighter py-10 sm:flex-row sm:py-12">
+    <p class="font-body font-light text-primary">
+      &copy; 2023 Lucas Mendelowski
+    </p>
+    <div class="flex items-center pt-5 gap-5 sm:pt-0">
+      <a href="https://www.linkedin.com/in/lucasmendelowski/" target="_blank">
+        <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-linkedin"></i>
+      </a>
+
+      <a href="https://github.com/lcmen" target="_blank">
+        <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-github"></i>
+      </a>
+
+      <a href="https://twitter.com/lcmen_" target="_blank">
+        <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-twitter"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>
