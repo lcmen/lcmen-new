@@ -5,7 +5,7 @@
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
     <title>Pattern matching with Ruby - Lucas Mendelowski</title>
-    <meta name="description" content="I'm Lucas, an experienced software engineer focused on building web applications." />
+    <meta name="description" content="Pattern matching introduced in Ruby 2.7, allows for destructering data to make code more elegant." />
     <meta property="og:image" content="https://mendelowski.com/assets/img/social.jpg" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:title" content="Pattern matching with Ruby - Lucas Mendelowski" />
@@ -154,7 +154,7 @@
 
       <div>
         <div class="container mx-auto">
-          <div>
+          <article class="mb-8">
   <p class="mb-4">
     
       <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
@@ -175,18 +175,18 @@
       3 min read
     </p>
   </div>
-  <article class="prose prose max-w-none">
-    <p>With version 2.7, Ruby introduced a pattern matching, the feature that simplifies matching and destructuring data to make the code more concise, readable, and robust.</p>
+  <content class="prose prose max-w-none">
+    <p>With version 2.7, Ruby introduced a pattern matching. The feature that simplifies matching and destructuring data to make the code more concise and readable.</p>
 
-<p>Pattern matching, a concept borrowed from functional programming languages, enables developers to match values based on their structure and extract elements with ease. This powerful addition to the Ruby toolkit opens up new avenues for expressing complex logic in a more natural and elegant way. Whether you’re a seasoned Ruby developer or just getting started, understanding and mastering pattern matching is essential for writing clean, maintainable, and efficient code.
-So, whether you’re looking to level up your Ruby skills or just curious about what pattern matching has to offer, let’s dive in and unlock the power of pattern matching in Ruby 2.7.</p>
+<p>Pattern matching is a concept borrowed from functional programming. It enables developers to match values based on their structure and extract elements at the same time. This powerful addition to the Ruby toolkit opens up new avenues for expressing complex logic in a more natural and elegant way.</p>
 
-<p>Your code will thank you!</p>
+<p>In this article we will dive in and unlock the power of pattern matching to make your code easier to understand.</p>
+
+<p>Your colleagues will thank you!</p>
 
 <h2 id="matching-against-array-or-hashes">Matching against array or hashes</h2>
 
 <p>In Ruby, pattern matching can be done using the <code class="language-plaintext highlighter-rouge">in</code> or <code class="language-plaintext highlighter-rouge">=&gt;</code> (only available in Ruby &gt;= 3) operators. Below are a couple of examples illustrating the power of this approach:</p>
-
 <h3 id="matching-with-case-and-in">Matching with <code class="language-plaintext highlighter-rouge">case</code> and <code class="language-plaintext highlighter-rouge">in</code></h3>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># assuming api.get returns hashes like:</span>
@@ -201,7 +201,7 @@ So, whether you’re looking to level up your Ruby skills or just curious about 
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>In this example, we use a <code class="language-plaintext highlighter-rouge">case</code> statement with the <code class="language-plaintext highlighter-rouge">in</code> operator to match different patterns within the returned hash from <code class="language-plaintext highlighter-rouge">api.get</code> method. Depending on the <code class="language-plaintext highlighter-rouge">success</code> field, we can extract different values.</p>
+<p>In this example, we use a <code class="language-plaintext highlighter-rouge">case</code> statement with the <code class="language-plaintext highlighter-rouge">in</code> operator to match different patterns within the returned hash from <code class="language-plaintext highlighter-rouge">api.get</code> method. Depending on the <code class="language-plaintext highlighter-rouge">success</code> field, we extract different values from the result.</p>
 
 <h3 id="matching-with--available-only-in-ruby-30-and-above">Matching with <code class="language-plaintext highlighter-rouge">=&gt;</code> (available only in Ruby 3.0 and above):</h3>
 
@@ -210,11 +210,11 @@ So, whether you’re looking to level up your Ruby skills or just curious about 
 <span class="n">success</span> <span class="c1"># true</span>
 </code></pre></div></div>
 
-<p>In this example, we create a hash called <code class="language-plaintext highlighter-rouge">result</code> and use the <code class="language-plaintext highlighter-rouge">=&gt;</code> operator to match it against the hash with <code class="language-plaintext highlighter-rouge">success</code> key, and extracting value under that key.</p>
+<p>If we only need to extract some value from the data structure, we can use <code class="language-plaintext highlighter-rouge">=&gt;</code> operator to avoid lengthy and verbose <code class="language-plaintext highlighter-rouge">case</code> / <code class="language-plaintext highlighter-rouge">in</code> construction.</p>
 
 <h2 id="matching-multiple-patterns">Matching multiple patterns</h2>
 
-<p>You can match against multiple patterns within a single block by using the <code class="language-plaintext highlighter-rouge">|</code> operator:</p>
+<p>You can also match against multiple patterns within a single block by using the <code class="language-plaintext highlighter-rouge">|</code> operator:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># assuming api.get might return hashes in one of the following schemas:</span>
 <span class="c1">#   - { success: true|false, data: Object }</span>
@@ -231,7 +231,7 @@ So, whether you’re looking to level up your Ruby skills or just curious about 
 
 <h2 id="assigning-matched-values-to-variables">Assigning matched values to variables</h2>
 
-<p>To assign the matched value from <code class="language-plaintext highlighter-rouge">case</code> / <code class="language-plaintext highlighter-rouge">in</code> construct to a variable, you can use the <code class="language-plaintext highlighter-rouge">=&gt;</code> operator:</p>
+<p>To assign the matched value from <code class="language-plaintext highlighter-rouge">case</code> / <code class="language-plaintext highlighter-rouge">in</code> construct to a variable, combine it with the <code class="language-plaintext highlighter-rouge">=&gt;</code> operator:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">api</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="k">in</span> <span class="p">{</span> <span class="ss">success: </span><span class="kp">true</span><span class="o">|</span><span class="kp">false</span><span class="p">,</span> <span class="ss">data: </span><span class="no">Object</span> <span class="p">}</span> <span class="o">=&gt;</span> <span class="n">response</span>
@@ -239,11 +239,11 @@ So, whether you’re looking to level up your Ruby skills or just curious about 
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>This allows you to work with the matched value conveniently by exposing it under variable with the specified name (<code class="language-plaintext highlighter-rouge">response</code> in this case).</p>
+<p>This allows you to work with the matched value conveniently by exposing the whole data under variable with the provided name (<code class="language-plaintext highlighter-rouge">response</code> in this case).</p>
 
 <h2 id="matching-the-same-value-across-patterns">Matching the same value across patterns</h2>
 
-<p>Use the <code class="language-plaintext highlighter-rouge">^</code> (pin operator) to match the same value across different fields:</p>
+<p>Use the <code class="language-plaintext highlighter-rouge">^</code> (pin operator) to match the same value across different points of reference:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="p">[</span><span class="n">api</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'active'</span><span class="p">),</span> <span class="n">api</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'invited'</span><span class="p">)]</span>
 <span class="k">in</span> <span class="p">[</span><span class="n">number</span><span class="p">,</span> <span class="o">^</span><span class="n">number</span><span class="p">]</span>
@@ -267,7 +267,7 @@ So, whether you’re looking to level up your Ruby skills or just curious about 
 
 <h2 id="matching-against-classes">Matching against classes</h2>
 
-<p>In Ruby, pattern matching isn’t limited to arrays and hashes. You can also utilize it with custom classes. To make a class available for pattern matching operators, you need to implement two methods:</p>
+<p>In Ruby, pattern matching isn’t limited to arrays and hashes. You can also utilize it with your own classes. To make a class available for pattern matching operators, you need to implement two methods:</p>
 
 <ul>
   <li><code class="language-plaintext highlighter-rouge">deconstruct</code> for array-style matching</li>
@@ -308,8 +308,8 @@ So, whether you’re looking to level up your Ruby skills or just curious about 
 
 <p>Pattern matching in Ruby is a powerful tool that simplifies data extraction and enhances code clarity. It’s a valuable addition to your Ruby toolkit, enabling you to write cleaner, and more expressive code.</p>
 
-  </article>
-</div>
+  </content >
+</article>
 
         </div>
       </div>
