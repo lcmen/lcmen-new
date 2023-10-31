@@ -6,24 +6,24 @@
     <meta charset="utf-8" />
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
-    <meta name="description" content="Pattern matching introduced in Ruby 2.7, allows for destructering data to make code more elegant." />
+    <meta name="description" content="Pattern matching introduced in Ruby 2.7, allows for matching values against patterns and deconstructing their constituent parts." />
     <meta name="turbo-cache-control">
 
     <meta property="og:title" content="Pattern matching with Ruby - Lucas Mendelowski" />
-    <meta property="og:description" content="Pattern matching introduced in Ruby 2.7, allows for destructering data to make code more elegant." />
-    <meta property="og:image" content="https://mendelowski.com/assets/img/social.png" />
+    <meta property="og:description" content="Pattern matching introduced in Ruby 2.7, allows for matching values against patterns and deconstructing their constituent parts." />
+    <meta property="og:image" content="https://new.mendelowski.com/assets/img/social.png" />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:url" content="https://mendelowski.com" />
+    <meta property="og:url" content="https://new.mendelowski.com" />
     <meta property="og:site_name" content="Lucas Mendelowski" />
 
     <meta name="twitter:title" content="Pattern matching with Ruby - Lucas Mendelowski" />
-    <meta name="twitter:description" content="Pattern matching introduced in Ruby 2.7, allows for destructering data to make code more elegant." />
+    <meta name="twitter:description" content="Pattern matching introduced in Ruby 2.7, allows for matching values against patterns and deconstructing their constituent parts." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="lcmen_" />
     <meta name="twitter:site" content="lcmen_" />
-    <meta name="twitter:image" content="https://mendelowski.com/assets/img/social.png" />
+    <meta name="twitter:image" content="https://new.mendelowski.com/assets/img/social.png" />
 
-    <link rel="canonical" href="https://mendelowski.com/_posts/2023-09-28-pattern-matching-with-ruby.md" />
+    <link rel="canonical" href="https://new.mendelowski.com/_posts/2023-09-28-pattern-matching-with-ruby.md" />
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
     <link crossorigin="crossorigin" href="https://fonts.gstatic.com" rel="preconnect" />
     <link crossorigin="crossorigin" href="https://unpkg.com" rel="preconnect" />
@@ -185,18 +185,19 @@
     </p>
   </div>
   <content class="prose prose max-w-none">
-    <p>With version 2.7, Ruby introduced a pattern matching. The feature that simplifies matching and destructuring data to make the code more concise and readable.</p>
+    <p>With version 2.7, Ruby introduced a new language construct to work with data structures called pattern matching.</p>
 
-<p>Pattern matching is a concept borrowed from functional programming. It enables developers to match values based on their structure and extract elements at the same time. This powerful addition to the Ruby toolkit opens up new avenues for expressing complex logic in a more natural and elegant way.</p>
+<p>Pattern matching is a concept borrowed from functional programming. It enables developers to match values based on their structure (shape) and extract their elements at the same time. This powerful addition to the Ruby toolkit opens up new avenues for expressing complex logic in a more natural and elegant way.</p>
 
-<p>In this article we will dive in and unlock the power of pattern matching to make your code easier to understand.</p>
+<p>In this article we will dive in and unlock the power of pattern matching to make your code easier to understand and reason about.</p>
 
-<p>Your colleagues will thank you!</p>
+<p>Your codebase will thank you!</p>
 
 <h2 id="matching-against-array-or-hashes">Matching against array or hashes</h2>
 
-<p>In Ruby, pattern matching can be done using the <code class="language-plaintext highlighter-rouge">in</code> or <code class="language-plaintext highlighter-rouge">=&gt;</code> (only available in Ruby &gt;= 3) operators. Below are a couple of examples illustrating the power of this approach:</p>
-<h3 id="matching-with-case-and-in">Matching with <code class="language-plaintext highlighter-rouge">case</code> and <code class="language-plaintext highlighter-rouge">in</code></h3>
+<p>In Ruby, pattern matching can be done using the <code class="language-plaintext highlighter-rouge">in</code> or <code class="language-plaintext highlighter-rouge">=&gt;</code> (only available in Ruby &gt;= 3) operators. For the time being, destructering hashes is limited to those indexed by symbols (strings are not supported).</p>
+
+<p>Below are a couple of examples illustrating the power of this approach:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># assuming api.get returns hashes like:</span>
 <span class="c1">#   - { success: true|false, data: Object }</span>
@@ -204,22 +205,33 @@
 
 <span class="k">case</span> <span class="n">api</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="k">in</span> <span class="p">{</span> <span class="ss">success: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">data: </span><span class="n">user</span> <span class="p">}</span>
-<span class="nb">p</span> <span class="n">user</span>
+  <span class="nb">p</span> <span class="n">user</span>
 <span class="k">in</span> <span class="p">{</span> <span class="ss">success: </span><span class="kp">false</span><span class="p">,</span> <span class="ss">message: </span><span class="n">error</span> <span class="p">}</span>
-<span class="nb">p</span> <span class="n">error</span>
+  <span class="nb">p</span> <span class="n">error</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
 <p>In this example, we use a <code class="language-plaintext highlighter-rouge">case</code> statement with the <code class="language-plaintext highlighter-rouge">in</code> operator to match different patterns within the returned hash from <code class="language-plaintext highlighter-rouge">api.get</code> method. Depending on the <code class="language-plaintext highlighter-rouge">success</code> field, we extract different values from the result.</p>
 
-<h3 id="matching-with--available-only-in-ruby-30-and-above">Matching with <code class="language-plaintext highlighter-rouge">=&gt;</code> (available only in Ruby 3.0 and above):</h3>
+<p>If we only need to extract some value from the data (destructure), we can use <code class="language-plaintext highlighter-rouge">=&gt;</code> operator to avoid lengthy <code class="language-plaintext highlighter-rouge">case</code> / <code class="language-plaintext highlighter-rouge">in</code> construction.</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">success: </span><span class="kp">true</span> <span class="p">}</span>
 <span class="n">result</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">success: </span><span class="p">}</span>
 <span class="n">success</span> <span class="c1"># true</span>
 </code></pre></div></div>
 
-<p>If we only need to extract some value from the data structure, we can use <code class="language-plaintext highlighter-rouge">=&gt;</code> operator to avoid lengthy and verbose <code class="language-plaintext highlighter-rouge">case</code> / <code class="language-plaintext highlighter-rouge">in</code> construction.</p>
+<p>We can use both constructs to match against arrays as well:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># assuming result is similar to Rack compatible response</span>
+<span class="c1"># (e.g. `[200, { "Content-Type": "text/plain" }, ["Hello World"] ]`)</span>
+
+<span class="k">case</span> <span class="n">result</span>
+<span class="k">in</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">body</span><span class="p">]</span>
+  <span class="nb">p</span> <span class="n">body</span>
+<span class="k">in</span> <span class="p">[</span><span class="mi">302</span><span class="p">,</span> <span class="p">{</span> <span class="no">Location</span><span class="p">:</span> <span class="n">url</span> <span class="p">},</span> <span class="n">_</span><span class="p">]</span>
+  <span class="nb">p</span> <span class="n">url</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <h2 id="matching-multiple-patterns">Matching multiple patterns</h2>
 
@@ -228,7 +240,7 @@
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># assuming api.get might return hashes in one of the following schemas:</span>
 <span class="c1">#   - { success: true|false, data: Object }</span>
 <span class="c1">#   - { error: true, message: String }</span>
-<span class="c1">#   - { error: true, data: string }</span>
+<span class="c1">#   - { error: true, data: String }</span>
 
 <span class="k">case</span> <span class="n">api</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="k">in</span> <span class="p">{</span> <span class="ss">success: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">data: </span><span class="n">user</span> <span class="p">}</span>
@@ -238,9 +250,26 @@
 <span class="k">end</span>
 </code></pre></div></div>
 
+<h2 id="guards-in-pattern-matching">Guards in pattern matching</h2>
+
+<p>Matchers can also include additional check that is verified after the value is matched:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># assuming api.get might return hashes in one of the following schemas:</span>
+<span class="c1">#   - { status: 200, data: Object }</span>
+<span class="c1">#   - { status: 201, data: Object }</span>
+<span class="c1">#   - { status: 403, error: String }</span>
+
+<span class="k">case</span> <span class="n">api</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">in</span> <span class="p">{</span> <span class="ss">status: </span><span class="n">status</span><span class="p">,</span> <span class="ss">data: </span><span class="n">user</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="mi">200</span><span class="o">...</span><span class="mi">400</span><span class="p">).</span><span class="nf">include?</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
+  <span class="nb">p</span> <span class="n">user</span>
+<span class="k">in</span> <span class="p">{</span> <span class="ss">error: </span><span class="n">error</span> <span class="p">}</span>
+  <span class="nb">p</span> <span class="n">error</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
 <h2 id="assigning-matched-values-to-variables">Assigning matched values to variables</h2>
 
-<p>To assign the matched value from <code class="language-plaintext highlighter-rouge">case</code> / <code class="language-plaintext highlighter-rouge">in</code> construct to a variable, combine it with the <code class="language-plaintext highlighter-rouge">=&gt;</code> operator:</p>
+<p>To assign the matched value from <code class="language-plaintext highlighter-rouge">case</code> / <code class="language-plaintext highlighter-rouge">in</code> construct to a variable (e.g. for further processing), combine it with the <code class="language-plaintext highlighter-rouge">=&gt;</code> operator:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">api</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="k">in</span> <span class="p">{</span> <span class="ss">success: </span><span class="kp">true</span><span class="o">|</span><span class="kp">false</span><span class="p">,</span> <span class="ss">data: </span><span class="no">Object</span> <span class="p">}</span> <span class="o">=&gt;</span> <span class="n">response</span>
@@ -252,7 +281,7 @@
 
 <h2 id="matching-the-same-value-across-patterns">Matching the same value across patterns</h2>
 
-<p>Use the <code class="language-plaintext highlighter-rouge">^</code> (pin operator) to match the same value across different points of reference:</p>
+<p>To match the same value across different points of comparison, ese the <code class="language-plaintext highlighter-rouge">^</code> (pin operator):</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="p">[</span><span class="n">api</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'active'</span><span class="p">),</span> <span class="n">api</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'invited'</span><span class="p">)]</span>
 <span class="k">in</span> <span class="p">[</span><span class="n">number</span><span class="p">,</span> <span class="o">^</span><span class="n">number</span><span class="p">]</span>
