@@ -285,38 +285,188 @@ to application’s host configured in <code class="language-plaintext highlighte
   <p class="mb-4">
     
       <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
-  #golang
+  #ruby
 </span>
 
     
   </p>
   <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
-    Run gofmt on all files
+    Deprecating methods with ActiveSupport
   </h2>
   <div class="flex items-center gap-2 py-4 font-body text-grey">
     <p class="font-light">
-      January 07, 2019
+      September 13, 2020
     </p>
   </div>
   <content class="prose prose max-w-none">
-    <p>To run go formatter recursively on all project’s files simply use:</p>
+    <p>When working on the code (especially in publicly available libraries) there are situations, where some methods are planned for phase-out. In those cases, <code class="language-plaintext highlighter-rouge">ActiveSupport#deprecate</code> method might come handy:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gofmt -s -w .
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span>
+  <span class="k">def</span> <span class="nf">full_name</span>
+    <span class="s2">"</span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">last_name</span><span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">name</span>
+    <span class="n">full_name</span>
+  <span class="k">end</span>
+
+  <span class="n">deprecate</span> <span class="ss">:name</span>
+<span class="k">end</span>
 </code></pre></div></div>
 
-<p>To print the files that has been changed add -l option:</p>
+<p>Now whenever <code class="language-plaintext highlighter-rouge">User.name</code> is called, a deprecation warning will be displayed:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gofmt -l -s -w .
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):011:0&gt; user.name
+DEPRECATION WARNING: name is deprecated and will be removed from Rails 7.2 (called from irb_binding at (irb):11)
+=&gt; "Jon Snow"
 </code></pre></div></div>
 
-<p>Useful options:</p>
+<p><code class="language-plaintext highlighter-rouge">ActiveSupport#deprecate</code> allows to specify a new method’s name that should be used instead:</p>
 
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">-d</code> display diffs instead of rewriting files</li>
-  <li><code class="language-plaintext highlighter-rouge">-l</code> list files where formatting differs from gofmt’s</li>
-  <li><code class="language-plaintext highlighter-rouge">-s</code> simplifies the code</li>
-  <li><code class="language-plaintext highlighter-rouge">-w</code> writes results back</li>
-</ul>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span>
+  <span class="o">...</span>
+
+  <span class="n">deprecate</span> <span class="ss">name: :full_name</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):014:0&gt; user.name
+DEPRECATION WARNING: name is deprecated and will be removed from Rails 7.2 (use full_name instead) (called from irb_binding at (irb):14)
+=&gt; "Jon Snow"
+</code></pre></div></div>
+
+<p>It’s also possible to customize a message:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span>
+  <span class="o">...</span>
+
+  <span class="n">deprecate</span> <span class="ss">name: </span><span class="s1">'try User#full_name instead'</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):017:0&gt; user.name
+DEPRECATION WARNING: name is deprecated and will be removed from Rails 7.2 (try User#full_name instead) (called from irb_binding at (irb):17)
+=&gt; "Jon Snow"
+</code></pre></div></div>
+
+<p>Release name and its version can be adjusted (via custom deprecator) as well:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span>
+  <span class="o">...</span>
+
+  <span class="n">next_release_deprecator</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Deprecation</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s1">'next-release'</span><span class="p">,</span> <span class="s1">'MyGem'</span><span class="p">)</span>
+
+  <span class="n">deprecate</span> <span class="ss">name: </span><span class="s1">'try User#full_name instead'</span><span class="p">,</span> <span class="ss">deprecator: </span><span class="n">next_release_deprecator</span>
+  <span class="c1"># or use deprecator directly</span>
+  <span class="c1"># next_release_deprecator.deprecate_methods(self, name: :full_name)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):020:0&gt; user.name
+DEPRECATION WARNING: name is deprecated and will be removed from MyGem next-release (try User#full_name instead) (called from irb_binding at (irb):24)
+=&gt; "Jon Snow"
+</code></pre></div></div>
+
+  </content>
+</article >
+
+    
+      
+      <article class="border-t border-grey-lighter mt-8 pt-8">
+  <p class="mb-4">
+    
+      <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
+  #ruby
+</span>
+
+    
+  </p>
+  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
+    Padding numbers with zeros in Ruby
+  </h2>
+  <div class="flex items-center gap-2 py-4 font-body text-grey">
+    <p class="font-light">
+      February 29, 2020
+    </p>
+  </div>
+  <content class="prose prose max-w-none">
+    <p><a href="https://ruby-doc.org/3.2.2/String.html#method-i-25">String#%</a> method allows to specify format to apply to its argument. It can be used to pad numbers with zeros.</p>
+
+<h3 id="leading-zeros">Leading zeros</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; "%03d" % 2
+=&gt; "002"
+</code></pre></div></div>
+
+<h3 id="trailing-zeros">Trailing zeros</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; "%.2f" % 2
+=&gt; "2.00"
+</code></pre></div></div>
+
+  </content>
+</article >
+
+    
+      
+      <article class="border-t border-grey-lighter mt-8 pt-8">
+  <p class="mb-4">
+    
+      <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
+  #ruby
+</span>
+
+    
+      <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
+  #rails
+</span>
+
+    
+  </p>
+  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
+    HSTS with Rails
+  </h2>
+  <div class="flex items-center gap-2 py-4 font-body text-grey">
+    <p class="font-light">
+      August 26, 2019
+    </p>
+  </div>
+  <content class="prose prose max-w-none">
+    <h1 id="hsts-with-rails">HSTS with Rails</h1>
+
+<p><strong>TL;DR</strong> HSTS tells browsers to always make requests over HTTPS to HSTS sites.</p>
+
+<p>HSTS (HTTP Strict Transport Security) is a mechanism for preventing man-in-the-middle attack known as SSL Stripping. Such attack relies on hijacking browser connection to use <code class="language-plaintext highlighter-rouge">http</code> instead of <code class="language-plaintext highlighter-rouge">https</code> for communication with the server. Using <code class="language-plaintext highlighter-rouge">Strict-Transport-Security</code> header we can declare that browser should communicate with <code class="language-plaintext highlighter-rouge">https</code> only and specify a period of time for such behavior.</p>
+
+<p>Example of attack from <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">MDN docs</a>:</p>
+
+<blockquote>
+  <p>You log into a free WiFi access point at an airport and start surfing the web, visiting your online banking service to check your balance and pay a couple of bills. Unfortunately, the access point you’re using is actually a hacker’s laptop, and they’re intercepting your original HTTP request and redirecting you to a clone of your bank’s site instead of the real thing. Now your private data is exposed to the hacker.</p>
+
+  <p>Strict Transport Security resolves this problem; as long as you’ve accessed your bank’s web site once using HTTPS, and the bank’s web site uses Strict Transport Security, your browser will know to automatically use only HTTPS, which prevents hackers from performing this sort of man-in-the-middle attack.</p>
+</blockquote>
+
+<p>HSTS can be enabled by switching <code class="language-plaintext highlighter-rouge">force_ssl</code> option in the application’s config:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config/environment/production.rb</span>
+
+<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span>
+  <span class="o">...</span>
+
+  <span class="n">config</span><span class="p">.</span><span class="nf">force_ssl</span> <span class="o">=</span> <span class="kp">true</span>
+
+  <span class="o">...</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Setting <code class="language-plaintext highlighter-rouge">force_ssl</code> to <code class="language-plaintext highlighter-rouge">true</code>, inserts
+<a href="https://api.rubyonrails.org/classes/ActionDispatch/SSL.html">ActionDispatch::SSL</a> middleware which is responsible for 3 things:</p>
+
+<ol>
+  <li>Redirecting <code class="language-plaintext highlighter-rouge">http</code> requests to <code class="language-plaintext highlighter-rouge">https</code></li>
+  <li>Adding <code class="language-plaintext highlighter-rouge">HSTS</code> header to the response</li>
+  <li>Set <code class="language-plaintext highlighter-rouge">secure</code> flag on cookies to send them through <code class="language-plaintext highlighter-rouge">https</code> only</li>
+</ol>
 
   </content>
 </article >
@@ -325,6 +475,39 @@ to application’s host configured in <code class="language-plaintext highlighte
   </div>
 
   
+  <div class="flex pt-8 lg:pt-16 gap-3">
+    
+
+    
+      
+        
+          <span class="cursor-pointer border-2 border-secondary px-3 py-1 font-body font-medium text-secondary">
+            1
+          </span>
+        
+      
+        
+          <a
+            href="/til/2/"
+            class="cursor-pointer border-2 border-primary px-3 py-1 font-body font-medium text-primary transition-colors hover:border-secondary hover:text-secondary"
+            aria-label="Page 2"
+          >2</a>
+        
+      
+    
+
+    
+      <a
+        href="/til/2/"
+        class="group flex cursor-pointer items-center border-2 border-primary px-3 py-1 font-body font-medium text-primary transition-colors hover:border-secondary hover:text-secondary"
+        aria-label="Next page"
+      >
+        Next
+        <i class="bx bx-right-arrow-alt ml-1 text-primary transition-colors group-hover:text-secondary"></i>
+      </a>
+    
+  </div>
+
 
 </div>
 
