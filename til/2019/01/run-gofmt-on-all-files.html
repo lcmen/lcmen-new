@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <title>HSTS with Rails - Lucas Mendelowski</title>
+    <title>Run gofmt on all files - Lucas Mendelowski</title>
 
     <meta charset="utf-8" />
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
-    <meta name="description" content="I'm Lucas, an experienced software engineer focused on building web applications." />
+    <meta name="description" content="Run built-in go formatter on all project's files at once" />
     <meta name="turbo-cache-control">
 
-    <meta property="og:title" content="HSTS with Rails - Lucas Mendelowski" />
-    <meta property="og:description" content="I'm Lucas, an experienced software engineer focused on building web applications." />
+    <meta property="og:title" content="Run gofmt on all files - Lucas Mendelowski" />
+    <meta property="og:description" content="Run built-in go formatter on all project's files at once" />
     <meta property="og:image" content="https://www.mendelowski.com/assets/img/social.png" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:url" content="https://www.mendelowski.com" />
     <meta property="og:site_name" content="Lucas Mendelowski" />
 
-    <meta name="twitter:title" content="HSTS with Rails - Lucas Mendelowski" />
-    <meta name="twitter:description" content="I'm Lucas, an experienced software engineer focused on building web applications." />
+    <meta name="twitter:title" content="Run gofmt on all files - Lucas Mendelowski" />
+    <meta name="twitter:description" content="Run built-in go formatter on all project's files at once" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="lcmen_" />
     <meta name="twitter:site" content="lcmen_" />
     <meta name="twitter:image" content="https://www.mendelowski.com/assets/img/social.png" />
 
-    <link rel="canonical" href="https://www.mendelowski.com/_notes/2019-08-26-hsts-with-rails.md" />
+    <link rel="canonical" href="https://www.mendelowski.com/til/2019/01/run-gofmt-on-all-files" />
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
     <link crossorigin="crossorigin" href="https://fonts.gstatic.com" rel="preconnect" />
     <link crossorigin="crossorigin" href="https://unpkg.com" rel="preconnect" />
@@ -163,41 +163,49 @@
 
       <div>
         <div class="container mx-auto">
-          <h1 id="hsts-with-rails">HSTS with Rails</h1>
+          <article class="mb-8">
+  <p class="mb-4">
+    
+      <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
+  #golang
+</span>
 
-<p><strong>TL;DR</strong> HSTS tells browsers to always make requests over HTTPS to HSTS sites.</p>
+    
+  </p>
+  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
+    Run gofmt on all files
+  </h2>
+  <div class="flex items-center gap-2 py-4 font-body text-grey">
+    <p class="font-light">
+      January 07, 2019
+    </p>
+    <span>//</span>
+    <p class="font-light">
+      30 sec read
+    </p>
+  </div>
+  <content class="prose prose max-w-none">
+    <p>To run go formatter recursively on all project’s files simply use:</p>
 
-<p>HSTS (HTTP Strict Transport Security) is a mechanism for preventing man-in-the-middle attack known as SSL Stripping. Such attack relies on hijacking browser connection to use <code class="language-plaintext highlighter-rouge">http</code> instead of <code class="language-plaintext highlighter-rouge">https</code> for communication with the server. Using <code class="language-plaintext highlighter-rouge">Strict-Transport-Security</code> header we can declare that browser should communicate with <code class="language-plaintext highlighter-rouge">https</code> only and specify a period of time for such behavior.</p>
-
-<p>Example of attack from <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">MDN docs</a>:</p>
-
-<blockquote>
-  <p>You log into a free WiFi access point at an airport and start surfing the web, visiting your online banking service to check your balance and pay a couple of bills. Unfortunately, the access point you’re using is actually a hacker’s laptop, and they’re intercepting your original HTTP request and redirecting you to a clone of your bank’s site instead of the real thing. Now your private data is exposed to the hacker.</p>
-
-  <p>Strict Transport Security resolves this problem; as long as you’ve accessed your bank’s web site once using HTTPS, and the bank’s web site uses Strict Transport Security, your browser will know to automatically use only HTTPS, which prevents hackers from performing this sort of man-in-the-middle attack.</p>
-</blockquote>
-
-<p>HSTS can be enabled by switching <code class="language-plaintext highlighter-rouge">force_ssl</code> option in the application’s config:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config/environment/production.rb</span>
-
-<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span>
-  <span class="o">...</span>
-
-  <span class="n">config</span><span class="p">.</span><span class="nf">force_ssl</span> <span class="o">=</span> <span class="kp">true</span>
-
-  <span class="o">...</span>
-<span class="k">end</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gofmt -s -w .
 </code></pre></div></div>
 
-<p>Setting <code class="language-plaintext highlighter-rouge">force_ssl</code> to <code class="language-plaintext highlighter-rouge">true</code>, inserts
-<a href="https://api.rubyonrails.org/classes/ActionDispatch/SSL.html">ActionDispatch::SSL</a> middleware which is responsible for 3 things:</p>
+<p>To print the files that has been changed add -l option:</p>
 
-<ol>
-  <li>Redirecting <code class="language-plaintext highlighter-rouge">http</code> requests to <code class="language-plaintext highlighter-rouge">https</code></li>
-  <li>Adding <code class="language-plaintext highlighter-rouge">HSTS</code> header to the response</li>
-  <li>Set <code class="language-plaintext highlighter-rouge">secure</code> flag on cookies to send them through <code class="language-plaintext highlighter-rouge">https</code> only</li>
-</ol>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gofmt -l -s -w .
+</code></pre></div></div>
+
+<p>Useful options:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">-d</code> display diffs instead of rewriting files</li>
+  <li><code class="language-plaintext highlighter-rouge">-l</code> list files where formatting differs from gofmt’s</li>
+  <li><code class="language-plaintext highlighter-rouge">-s</code> simplifies the code</li>
+  <li><code class="language-plaintext highlighter-rouge">-w</code> writes results back</li>
+</ul>
+
+  </content >
+</article>
 
         </div>
       </div>

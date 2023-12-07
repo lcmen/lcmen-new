@@ -23,7 +23,7 @@
     <meta name="twitter:site" content="lcmen_" />
     <meta name="twitter:image" content="https://www.mendelowski.com/assets/img/social.png" />
 
-    <link rel="canonical" href="https://www.mendelowski.com/.html" />
+    <link rel="canonical" href="https://www.mendelowski.com/til/2/index.html" />
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
     <link crossorigin="crossorigin" href="https://fonts.gstatic.com" rel="preconnect" />
     <link crossorigin="crossorigin" href="https://unpkg.com" rel="preconnect" />
@@ -180,9 +180,9 @@
 
   <div class="pt-8 lg:pt-12">
     
-      
-      <article class="">
+      <div class="">
   <p class="mb-4">
+    
     
       <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
   #golang
@@ -190,36 +190,17 @@
 
     
   </p>
-  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
-    Run gofmt on all files
-  </h2>
-  <div class="flex items-center gap-2 py-4 font-body text-grey">
+  <a
+    href="/til/2019/01/run-gofmt-on-all-files"
+    class="block font-body text-lg font-semibold text-primary transition-colors hover:text-green"
+    aria-label="Run gofmt on all files"
+  >Run gofmt on all files</a>
+  <div class="flex items-center font-body gap-2 pt-4 text-grey">
     <p class="font-light">
       January 07, 2019
     </p>
   </div>
-  <content class="prose prose max-w-none">
-    <p>To run go formatter recursively on all project’s files simply use:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gofmt -s -w .
-</code></pre></div></div>
-
-<p>To print the files that has been changed add -l option:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gofmt -l -s -w .
-</code></pre></div></div>
-
-<p>Useful options:</p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">-d</code> display diffs instead of rewriting files</li>
-  <li><code class="language-plaintext highlighter-rouge">-l</code> list files where formatting differs from gofmt’s</li>
-  <li><code class="language-plaintext highlighter-rouge">-s</code> simplifies the code</li>
-  <li><code class="language-plaintext highlighter-rouge">-w</code> writes results back</li>
-</ul>
-
-  </content>
-</article >
+</div>
 
     
   </div>

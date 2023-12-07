@@ -6,24 +6,24 @@
     <meta charset="utf-8" />
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
-    <meta name="description" content="I'm Lucas, an experienced software engineer focused on building web applications." />
+    <meta name="description" content="Add deprecation warning with custom message using ActiveSupport" />
     <meta name="turbo-cache-control">
 
     <meta property="og:title" content="Deprecating methods with ActiveSupport - Lucas Mendelowski" />
-    <meta property="og:description" content="I'm Lucas, an experienced software engineer focused on building web applications." />
+    <meta property="og:description" content="Add deprecation warning with custom message using ActiveSupport" />
     <meta property="og:image" content="https://www.mendelowski.com/assets/img/social.png" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:url" content="https://www.mendelowski.com" />
     <meta property="og:site_name" content="Lucas Mendelowski" />
 
     <meta name="twitter:title" content="Deprecating methods with ActiveSupport - Lucas Mendelowski" />
-    <meta name="twitter:description" content="I'm Lucas, an experienced software engineer focused on building web applications." />
+    <meta name="twitter:description" content="Add deprecation warning with custom message using ActiveSupport" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="lcmen_" />
     <meta name="twitter:site" content="lcmen_" />
     <meta name="twitter:image" content="https://www.mendelowski.com/assets/img/social.png" />
 
-    <link rel="canonical" href="https://www.mendelowski.com/_notes/2020-09-13-deprecating-methods-with-activesupport.md" />
+    <link rel="canonical" href="https://www.mendelowski.com/til/2020/09/deprecating-methods-with-activesupport" />
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
     <link crossorigin="crossorigin" href="https://fonts.gstatic.com" rel="preconnect" />
     <link crossorigin="crossorigin" href="https://unpkg.com" rel="preconnect" />
@@ -163,7 +163,29 @@
 
       <div>
         <div class="container mx-auto">
-          <p>When working on the code (especially in publicly available libraries) there are situations, where some methods are planned for phase-out. In those cases, <code class="language-plaintext highlighter-rouge">ActiveSupport#deprecate</code> method might come handy:</p>
+          <article class="mb-8">
+  <p class="mb-4">
+    
+      <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
+  #ruby
+</span>
+
+    
+  </p>
+  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
+    Deprecating methods with ActiveSupport
+  </h2>
+  <div class="flex items-center gap-2 py-4 font-body text-grey">
+    <p class="font-light">
+      September 13, 2020
+    </p>
+    <span>//</span>
+    <p class="font-light">
+      30 sec read
+    </p>
+  </div>
+  <content class="prose prose max-w-none">
+    <p>When working on the code (especially in publicly available libraries) there are situations, where some methods are planned for phase-out. In those cases, <code class="language-plaintext highlighter-rouge">ActiveSupport#deprecate</code> method might come handy:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span>
   <span class="k">def</span> <span class="nf">full_name</span>
@@ -230,6 +252,9 @@ DEPRECATION WARNING: name is deprecated and will be removed from Rails 7.2 (try 
 DEPRECATION WARNING: name is deprecated and will be removed from MyGem next-release (try User#full_name instead) (called from irb_binding at (irb):24)
 =&gt; "Jon Snow"
 </code></pre></div></div>
+
+  </content >
+</article>
 
         </div>
       </div>

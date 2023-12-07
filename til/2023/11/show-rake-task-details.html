@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <title>Fingerprinted URL to Ruby on Rails asset files - Lucas Mendelowski</title>
+    <title>Show Rake task details - Lucas Mendelowski</title>
 
     <meta charset="utf-8" />
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
-    <meta name="description" content="I'm Lucas, an experienced software engineer focused on building web applications." />
+    <meta name="description" content="Display Rake task details with Ruby" />
     <meta name="turbo-cache-control">
 
-    <meta property="og:title" content="Fingerprinted URL to Ruby on Rails asset files - Lucas Mendelowski" />
-    <meta property="og:description" content="I'm Lucas, an experienced software engineer focused on building web applications." />
+    <meta property="og:title" content="Show Rake task details - Lucas Mendelowski" />
+    <meta property="og:description" content="Display Rake task details with Ruby" />
     <meta property="og:image" content="https://www.mendelowski.com/assets/img/social.png" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:url" content="https://www.mendelowski.com" />
     <meta property="og:site_name" content="Lucas Mendelowski" />
 
-    <meta name="twitter:title" content="Fingerprinted URL to Ruby on Rails asset files - Lucas Mendelowski" />
-    <meta name="twitter:description" content="I'm Lucas, an experienced software engineer focused on building web applications." />
+    <meta name="twitter:title" content="Show Rake task details - Lucas Mendelowski" />
+    <meta name="twitter:description" content="Display Rake task details with Ruby" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="lcmen_" />
     <meta name="twitter:site" content="lcmen_" />
     <meta name="twitter:image" content="https://www.mendelowski.com/assets/img/social.png" />
 
-    <link rel="canonical" href="https://www.mendelowski.com/_notes/2023-10-09-asset-url-with-fingerprint.md" />
+    <link rel="canonical" href="https://www.mendelowski.com/til/2023/11/show-rake-task-details" />
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
     <link crossorigin="crossorigin" href="https://fonts.gstatic.com" rel="preconnect" />
     <link crossorigin="crossorigin" href="https://unpkg.com" rel="preconnect" />
@@ -163,35 +163,49 @@
 
       <div>
         <div class="container mx-auto">
-          <p>To get relative URL to application’s assets with their fingerprints, <code class="language-plaintext highlighter-rouge">ActionController::Base.helpers#asset_url</code> method can be used.
-It accepts a file name, and prints the relative path to the file, e.g.</p>
+          <article class="mb-8">
+  <p class="mb-4">
+    
+      <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
+  #ruby
+</span>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):002:0&gt; ActionController::Base.helpers.asset_path("application.js")
-=&gt; "/assets/application-8bf8a8aca6320619e6e4a215ae3f613d9cc3aa269397aa3fc93b821b1c56319c.js"
-</code></pre></div></div>
+    
+  </p>
+  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
+    Show Rake task details
+  </h2>
+  <div class="flex items-center gap-2 py-4 font-body text-grey">
+    <p class="font-light">
+      November 28, 2023
+    </p>
+    <span>//</span>
+    <p class="font-light">
+      30 sec read
+    </p>
+  </div>
+  <content class="prose prose max-w-none">
+    <p>Rake, a Make-like program implemented in Ruby has an option to show details of a specific task.</p>
 
-<p>If the absolute URL is needed, then <code class="language-plaintext highlighter-rouge">host</code> option must be provided, e.g.</p>
+<p>Let’s say we have a simple <code class="language-plaintext highlighter-rouge">Rakefile</code> with a following content:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):004:0&gt; ActionController::Base.helpers.asset_path("application.js", host: "http://localhost:3000")
-=&gt; "http://localhost:3000/assets/application-8bf8a8aca6320619e6e4a215ae3f613d9cc3aa269397aa3fc93b821b1c56319c.js"
-</code></pre></div></div>
-
-<p>Since, providing <code class="language-plaintext highlighter-rouge">host</code> manually can be cumbersome, it can be automated with a simple helper:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">asset_host</span>
-  <span class="vi">@host</span> <span class="o">||=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">configuration</span><span class="p">.</span><span class="nf">asset_host</span> <span class="o">||</span> <span class="n">default_host</span>
-<span class="k">end</span>
-
-<span class="k">def</span> <span class="nf">default_host</span>
-  <span class="n">opts</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">default_url_options</span><span class="p">.</span><span class="nf">dup</span><span class="p">.</span><span class="nf">tap</span> <span class="k">do</span> <span class="o">|</span><span class="n">options</span><span class="o">|</span>
-    <span class="n">options</span><span class="p">[</span><span class="ss">:scheme</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="ss">:protocol</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">namespace</span> <span class="ss">:foo</span> <span class="k">do</span>
+  <span class="n">desc</span> <span class="s2">"Simple foo:bar task that accepts 2 arguments to demonstrate rake -D option"</span>
+  <span class="n">task</span> <span class="ss">:bar</span><span class="p">,</span> <span class="p">[</span><span class="ss">:arg1</span><span class="p">,</span> <span class="ss">:arg2</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span> <span class="o">|</span><span class="n">_</span><span class="p">,</span> <span class="n">args</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="s2">"foo:bar"</span>
   <span class="k">end</span>
-  <span class="no">URI</span><span class="o">::</span><span class="no">Generic</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="n">opts</span><span class="p">).</span><span class="nf">to_s</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p><code class="language-plaintext highlighter-rouge">Rails.configuration.asset_host</code> is usually set if public assets are hosted on some CDN server. Otherwise the method falls back
-to application’s host configured in <code class="language-plaintext highlighter-rouge">default_url_options</code>.</p>
+<p>Executing <code class="language-plaintext highlighter-rouge">rake -D foo:bar</code> will show task description (including its arguments) in a user-friendly format:</p>
+
+<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/Repos <span class="o">&gt;</span> rake <span class="nt">-D</span> foo:bar
+rake foo:bar[arg1,arg2]
+    Simple foo:bar task that accepts 2 arguments to demonstrate rake <span class="nt">-D</span> option
+</code></pre></div></div>
+
+  </content >
+</article>
 
         </div>
       </div>

@@ -23,7 +23,7 @@
     <meta name="twitter:site" content="lcmen_" />
     <meta name="twitter:image" content="https://www.mendelowski.com/assets/img/social.png" />
 
-    <link rel="canonical" href="https://www.mendelowski.com/.html" />
+    <link rel="canonical" href="https://www.mendelowski.com/til/index.html" />
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
     <link crossorigin="crossorigin" href="https://fonts.gstatic.com" rel="preconnect" />
     <link crossorigin="crossorigin" href="https://unpkg.com" rel="preconnect" />
@@ -180,9 +180,9 @@
 
   <div class="pt-8 lg:pt-12">
     
-      
-      <article class="">
+      <div class="">
   <p class="mb-4">
+    
     
       <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
   #ruby
@@ -190,41 +190,22 @@
 
     
   </p>
-  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
-    Show Rake task details
-  </h2>
-  <div class="flex items-center gap-2 py-4 font-body text-grey">
+  <a
+    href="/til/2023/11/show-rake-task-details"
+    class="block font-body text-lg font-semibold text-primary transition-colors hover:text-green"
+    aria-label="Show Rake task details"
+  >Show Rake task details</a>
+  <div class="flex items-center font-body gap-2 pt-4 text-grey">
     <p class="font-light">
       November 28, 2023
     </p>
   </div>
-  <content class="prose prose max-w-none">
-    <p>Rake, a Make-like program implemented in Ruby has an option to show details of a specific task.</p>
-
-<p>Let’s say we have a simple <code class="language-plaintext highlighter-rouge">Rakefile</code> with a following content:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">namespace</span> <span class="ss">:foo</span> <span class="k">do</span>
-  <span class="n">desc</span> <span class="s2">"Simple foo:bar task that accepts 2 arguments to demonstrate rake -D option"</span>
-  <span class="n">task</span> <span class="ss">:bar</span><span class="p">,</span> <span class="p">[</span><span class="ss">:arg1</span><span class="p">,</span> <span class="ss">:arg2</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span> <span class="o">|</span><span class="n">_</span><span class="p">,</span> <span class="n">args</span><span class="o">|</span>
-    <span class="nb">puts</span> <span class="s2">"foo:bar"</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>Executing <code class="language-plaintext highlighter-rouge">rake -D foo:bar</code> will show task description (including its arguments) in a user-friendly format:</p>
-
-<div class="language-zsh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/Repos <span class="o">&gt;</span> rake <span class="nt">-D</span> foo:bar
-rake foo:bar[arg1,arg2]
-    Simple foo:bar task that accepts 2 arguments to demonstrate rake <span class="nt">-D</span> option
-</code></pre></div></div>
-
-  </content>
-</article >
+</div>
 
     
-      
-      <article class="border-t border-grey-lighter mt-8 pt-8">
+      <div class="border-t border-grey-lighter mt-8 pt-8 ">
   <p class="mb-4">
+    
     
       <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
   #ruby
@@ -237,52 +218,22 @@ rake foo:bar[arg1,arg2]
 
     
   </p>
-  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
-    Fingerprinted URL to Ruby on Rails asset files
-  </h2>
-  <div class="flex items-center gap-2 py-4 font-body text-grey">
+  <a
+    href="/til/2023/10/rails-asset-url-with-fingerprint"
+    class="block font-body text-lg font-semibold text-primary transition-colors hover:text-green"
+    aria-label="Ruby on Rails asset URL with fingerprint"
+  >Ruby on Rails asset URL with fingerprint</a>
+  <div class="flex items-center font-body gap-2 pt-4 text-grey">
     <p class="font-light">
       October 09, 2023
     </p>
   </div>
-  <content class="prose prose max-w-none">
-    <p>To get relative URL to application’s assets with their fingerprints, <code class="language-plaintext highlighter-rouge">ActionController::Base.helpers#asset_url</code> method can be used.
-It accepts a file name, and prints the relative path to the file, e.g.</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):002:0&gt; ActionController::Base.helpers.asset_path("application.js")
-=&gt; "/assets/application-8bf8a8aca6320619e6e4a215ae3f613d9cc3aa269397aa3fc93b821b1c56319c.js"
-</code></pre></div></div>
-
-<p>If the absolute URL is needed, then <code class="language-plaintext highlighter-rouge">host</code> option must be provided, e.g.</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):004:0&gt; ActionController::Base.helpers.asset_path("application.js", host: "http://localhost:3000")
-=&gt; "http://localhost:3000/assets/application-8bf8a8aca6320619e6e4a215ae3f613d9cc3aa269397aa3fc93b821b1c56319c.js"
-</code></pre></div></div>
-
-<p>Since, providing <code class="language-plaintext highlighter-rouge">host</code> manually can be cumbersome, it can be automated with a simple helper:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">asset_host</span>
-  <span class="vi">@host</span> <span class="o">||=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">configuration</span><span class="p">.</span><span class="nf">asset_host</span> <span class="o">||</span> <span class="n">default_host</span>
-<span class="k">end</span>
-
-<span class="k">def</span> <span class="nf">default_host</span>
-  <span class="n">opts</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">default_url_options</span><span class="p">.</span><span class="nf">dup</span><span class="p">.</span><span class="nf">tap</span> <span class="k">do</span> <span class="o">|</span><span class="n">options</span><span class="o">|</span>
-    <span class="n">options</span><span class="p">[</span><span class="ss">:scheme</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="ss">:protocol</span><span class="p">)</span>
-  <span class="k">end</span>
-  <span class="no">URI</span><span class="o">::</span><span class="no">Generic</span><span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="n">opts</span><span class="p">).</span><span class="nf">to_s</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p><code class="language-plaintext highlighter-rouge">Rails.configuration.asset_host</code> is usually set if public assets are hosted on some CDN server. Otherwise the method falls back
-to application’s host configured in <code class="language-plaintext highlighter-rouge">default_url_options</code>.</p>
-
-  </content>
-</article >
+</div>
 
     
-      
-      <article class="border-t border-grey-lighter mt-8 pt-8">
+      <div class="border-t border-grey-lighter mt-8 pt-8 ">
   <p class="mb-4">
+    
     
       <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
   #ruby
@@ -290,90 +241,22 @@ to application’s host configured in <code class="language-plaintext highlighte
 
     
   </p>
-  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
-    Deprecating methods with ActiveSupport
-  </h2>
-  <div class="flex items-center gap-2 py-4 font-body text-grey">
+  <a
+    href="/til/2020/09/deprecating-methods-with-activesupport"
+    class="block font-body text-lg font-semibold text-primary transition-colors hover:text-green"
+    aria-label="Deprecating methods with ActiveSupport"
+  >Deprecating methods with ActiveSupport</a>
+  <div class="flex items-center font-body gap-2 pt-4 text-grey">
     <p class="font-light">
       September 13, 2020
     </p>
   </div>
-  <content class="prose prose max-w-none">
-    <p>When working on the code (especially in publicly available libraries) there are situations, where some methods are planned for phase-out. In those cases, <code class="language-plaintext highlighter-rouge">ActiveSupport#deprecate</code> method might come handy:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span>
-  <span class="k">def</span> <span class="nf">full_name</span>
-    <span class="s2">"</span><span class="si">#{</span><span class="n">first_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">last_name</span><span class="si">}</span><span class="s2">"</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">name</span>
-    <span class="n">full_name</span>
-  <span class="k">end</span>
-
-  <span class="n">deprecate</span> <span class="ss">:name</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>Now whenever <code class="language-plaintext highlighter-rouge">User.name</code> is called, a deprecation warning will be displayed:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):011:0&gt; user.name
-DEPRECATION WARNING: name is deprecated and will be removed from Rails 7.2 (called from irb_binding at (irb):11)
-=&gt; "Jon Snow"
-</code></pre></div></div>
-
-<p><code class="language-plaintext highlighter-rouge">ActiveSupport#deprecate</code> allows to specify a new method’s name that should be used instead:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span>
-  <span class="o">...</span>
-
-  <span class="n">deprecate</span> <span class="ss">name: :full_name</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):014:0&gt; user.name
-DEPRECATION WARNING: name is deprecated and will be removed from Rails 7.2 (use full_name instead) (called from irb_binding at (irb):14)
-=&gt; "Jon Snow"
-</code></pre></div></div>
-
-<p>It’s also possible to customize a message:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span>
-  <span class="o">...</span>
-
-  <span class="n">deprecate</span> <span class="ss">name: </span><span class="s1">'try User#full_name instead'</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):017:0&gt; user.name
-DEPRECATION WARNING: name is deprecated and will be removed from Rails 7.2 (try User#full_name instead) (called from irb_binding at (irb):17)
-=&gt; "Jon Snow"
-</code></pre></div></div>
-
-<p>Release name and its version can be adjusted (via custom deprecator) as well:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span>
-  <span class="o">...</span>
-
-  <span class="n">next_release_deprecator</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Deprecation</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s1">'next-release'</span><span class="p">,</span> <span class="s1">'MyGem'</span><span class="p">)</span>
-
-  <span class="n">deprecate</span> <span class="ss">name: </span><span class="s1">'try User#full_name instead'</span><span class="p">,</span> <span class="ss">deprecator: </span><span class="n">next_release_deprecator</span>
-  <span class="c1"># or use deprecator directly</span>
-  <span class="c1"># next_release_deprecator.deprecate_methods(self, name: :full_name)</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>irb(main):020:0&gt; user.name
-DEPRECATION WARNING: name is deprecated and will be removed from MyGem next-release (try User#full_name instead) (called from irb_binding at (irb):24)
-=&gt; "Jon Snow"
-</code></pre></div></div>
-
-  </content>
-</article >
+</div>
 
     
-      
-      <article class="border-t border-grey-lighter mt-8 pt-8">
+      <div class="border-t border-grey-lighter mt-8 pt-8 ">
   <p class="mb-4">
+    
     
       <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
   #ruby
@@ -381,36 +264,22 @@ DEPRECATION WARNING: name is deprecated and will be removed from MyGem next-rele
 
     
   </p>
-  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
-    Padding numbers with zeros in Ruby
-  </h2>
-  <div class="flex items-center gap-2 py-4 font-body text-grey">
+  <a
+    href="/til/2020/02/padding-numbers-with-zeros-in-ruby"
+    class="block font-body text-lg font-semibold text-primary transition-colors hover:text-green"
+    aria-label="Padding numbers with zeros in Ruby"
+  >Padding numbers with zeros in Ruby</a>
+  <div class="flex items-center font-body gap-2 pt-4 text-grey">
     <p class="font-light">
       February 29, 2020
     </p>
   </div>
-  <content class="prose prose max-w-none">
-    <p><a href="https://ruby-doc.org/3.2.2/String.html#method-i-25">String#%</a> method allows to specify format to apply to its argument. It can be used to pad numbers with zeros.</p>
-
-<h3 id="leading-zeros">Leading zeros</h3>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; "%03d" % 2
-=&gt; "002"
-</code></pre></div></div>
-
-<h3 id="trailing-zeros">Trailing zeros</h3>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; "%.2f" % 2
-=&gt; "2.00"
-</code></pre></div></div>
-
-  </content>
-</article >
+</div>
 
     
-      
-      <article class="border-t border-grey-lighter mt-8 pt-8">
+      <div class="border-t border-grey-lighter mt-8 pt-8 ">
   <p class="mb-4">
+    
     
       <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
   #ruby
@@ -423,53 +292,17 @@ DEPRECATION WARNING: name is deprecated and will be removed from MyGem next-rele
 
     
   </p>
-  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
-    HSTS with Rails
-  </h2>
-  <div class="flex items-center gap-2 py-4 font-body text-grey">
+  <a
+    href="/til/2019/08/hsts-with-rails"
+    class="block font-body text-lg font-semibold text-primary transition-colors hover:text-green"
+    aria-label="HSTS with Rails"
+  >HSTS with Rails</a>
+  <div class="flex items-center font-body gap-2 pt-4 text-grey">
     <p class="font-light">
       August 26, 2019
     </p>
   </div>
-  <content class="prose prose max-w-none">
-    <h1 id="hsts-with-rails">HSTS with Rails</h1>
-
-<p><strong>TL;DR</strong> HSTS tells browsers to always make requests over HTTPS to HSTS sites.</p>
-
-<p>HSTS (HTTP Strict Transport Security) is a mechanism for preventing man-in-the-middle attack known as SSL Stripping. Such attack relies on hijacking browser connection to use <code class="language-plaintext highlighter-rouge">http</code> instead of <code class="language-plaintext highlighter-rouge">https</code> for communication with the server. Using <code class="language-plaintext highlighter-rouge">Strict-Transport-Security</code> header we can declare that browser should communicate with <code class="language-plaintext highlighter-rouge">https</code> only and specify a period of time for such behavior.</p>
-
-<p>Example of attack from <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">MDN docs</a>:</p>
-
-<blockquote>
-  <p>You log into a free WiFi access point at an airport and start surfing the web, visiting your online banking service to check your balance and pay a couple of bills. Unfortunately, the access point you’re using is actually a hacker’s laptop, and they’re intercepting your original HTTP request and redirecting you to a clone of your bank’s site instead of the real thing. Now your private data is exposed to the hacker.</p>
-
-  <p>Strict Transport Security resolves this problem; as long as you’ve accessed your bank’s web site once using HTTPS, and the bank’s web site uses Strict Transport Security, your browser will know to automatically use only HTTPS, which prevents hackers from performing this sort of man-in-the-middle attack.</p>
-</blockquote>
-
-<p>HSTS can be enabled by switching <code class="language-plaintext highlighter-rouge">force_ssl</code> option in the application’s config:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># config/environment/production.rb</span>
-
-<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span>
-  <span class="o">...</span>
-
-  <span class="n">config</span><span class="p">.</span><span class="nf">force_ssl</span> <span class="o">=</span> <span class="kp">true</span>
-
-  <span class="o">...</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>Setting <code class="language-plaintext highlighter-rouge">force_ssl</code> to <code class="language-plaintext highlighter-rouge">true</code>, inserts
-<a href="https://api.rubyonrails.org/classes/ActionDispatch/SSL.html">ActionDispatch::SSL</a> middleware which is responsible for 3 things:</p>
-
-<ol>
-  <li>Redirecting <code class="language-plaintext highlighter-rouge">http</code> requests to <code class="language-plaintext highlighter-rouge">https</code></li>
-  <li>Adding <code class="language-plaintext highlighter-rouge">HSTS</code> header to the response</li>
-  <li>Set <code class="language-plaintext highlighter-rouge">secure</code> flag on cookies to send them through <code class="language-plaintext highlighter-rouge">https</code> only</li>
-</ol>
-
-  </content>
-</article >
+</div>
 
     
   </div>
