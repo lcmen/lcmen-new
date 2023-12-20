@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Rails cache - key versioning - Lucas Mendelowski</title>
+
+    <meta charset="utf-8" />
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
+    <meta name="description" content="Explore the power of cache key versioning in Ruby on Rails to reducing data size in cache store." />
+    <meta name="turbo-cache-control">
+
+    <meta property="og:title" content="Rails cache - key versioning - Lucas Mendelowski" />
+    <meta property="og:description" content="Explore the power of cache key versioning in Ruby on Rails to reducing data size in cache store." />
+    <meta property="og:image" content="https://www.mendelowski.com/assets/img/social.png" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://www.mendelowski.com" />
+    <meta property="og:site_name" content="Lucas Mendelowski" />
+
+    <meta name="twitter:title" content="Rails cache - key versioning - Lucas Mendelowski" />
+    <meta name="twitter:description" content="Explore the power of cache key versioning in Ruby on Rails to reducing data size in cache store." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="lcmen_" />
+    <meta name="twitter:site" content="lcmen_" />
+    <meta name="twitter:image" content="https://www.mendelowski.com/assets/img/social.png" />
+
+    <link rel="canonical" href="https://www.mendelowski.com/blog/2023/12/rails-cache-key-versioning" />
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
+    <link crossorigin="crossorigin" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link crossorigin="crossorigin" href="https://unpkg.com" rel="preconnect" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" /></noscript>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css" media="screen" data-turbo-track="reload">
+    <script src="/assets/js/main.js" data-turbo-track="reload"></script>
+    <script src="https://unpkg.com/@hotwired/turbo" defer></script>
+  </head>
+  <body>
+    <div id="main">
+      <header id="header" class="container mx-auto" data-turbo-permanent>
+  <div class="flex items-center justify-between py-6 lg:py-10">
+    <a href="/" class="flex items-center" aria-label="Homepage">
+      <span class="mr-2">
+        <img src="/assets/img/logo.svg" width="44" height="36" alt="logo" class="mr-2"  />
+      </span>
+    </a>
+    <div class="flex items-center lg:hidden">
+      <button id="menu" class="group z-50" aria-label="Mobile menu">
+        <svg
+          width="24"
+          height="15"
+          xmlns="http://www.w3.org/2000/svg"
+          class="relative z-50 fill-current text-primary transition-transform group-[.active]:fill-white group-[.active]:rotate-90"
+        >
+          <g fill-rule="evenodd">
+            <rect width="24" height="3" />
+            <rect y="6" width="24" height="3" />
+            <rect y="12" width="24" height="3" />
+          </g>
+        </svg>
+      </button>
+      <nav class="pointer-events-none fixed inset-0 z-30 flex bg-black bg-opacity-80 opacity-0 transition-opacity lg:hidden duration-300">
+        <div class="ml-auto w-2/3 bg-green p-4 md:w-1/3">
+          <ul class="mt-8 flex flex-col">
+            <li>
+              <a
+                href="/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Intro"
+              >Intro</a>
+            </li>
+
+            <li>
+              <a
+                href="/blog/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Blog"
+              >Blog</a>
+            </li>
+
+            <li>
+              <a
+                href="/til/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Today I Learned"
+              >Til</a>
+            </li>
+
+            <li>
+              <a
+                href="/uses/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Uses"
+              >Uses</a>
+            </li>
+
+            <li>
+              <a
+                href="/contact/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Contact"
+              >Contact</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="hidden lg:block">
+      <ul class="flex items-center">
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Intro"
+          >Intro</a>
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/blog/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Blog"
+          >Blog</a>
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/til/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Today I Learned"
+          >Til</a>
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/uses/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Uses"
+          >Uses</a>
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/contact/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Contact"
+          >Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+
+      <div>
+        <div class="container mx-auto">
+          <article class="mb-8">
+  <p class="mb-4">
+    
+      <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
+  #ruby
+</span>
+
+    
+      <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
+  #ruby on rails
+</span>
+
+    
+  </p>
+  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
+    Rails cache - key versioning
+  </h2>
+  <div class="flex items-center gap-2 py-4 font-body text-grey">
+    <p class="font-light">
+      December 20, 2023
+    </p>
+    <span>//</span>
+    <p class="font-light">
+      2 min read
+    </p>
+  </div>
+  <content class="prose prose max-w-none">
+    <p>Caching stands as one of the most effective ways to enhance the performance of web applications. The general idea is simple: it relies on storing the result of expensive computation in some data storage system so that it can be reused without recomputing.</p>
+
+<p>Ruby on Rails provides a robust system to implement efficient caching strategies in web applications. The framework includes methods designed for different use cases, ranging from ETags and freshness checks in controllers to the expressive &lt;% cache %&gt; block in views and a low-level caching API via Rails.cache.fetch.</p>
+
+<p>Let’s delve into some examples:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Inside controllers</span>
+<span class="n">etag</span> <span class="p">{</span> <span class="n">user</span> <span class="p">}</span>
+<span class="n">fresh_when</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="n">stale?</span><span class="p">(</span><span class="n">users</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Inside views
+<span class="cp">&lt;%</span> <span class="n">cache</span> <span class="n">user</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">render</span> <span class="n">user</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># In your application code</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="n">user</span><span class="p">)</span> <span class="p">{</span> <span class="n">user</span><span class="p">.</span><span class="nf">to_json</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>In this article, we will explore the cache key versioning feature in Ruby on Rails that unlocks the potential for even finer optimization of caching behaviors.</p>
+
+<h2 id="key-versioning">Key versioning</h2>
+
+<p>All the little caching helpers presented above rely on <a href="https://api.rubyonrails.org/classes/ActiveRecord/Integration.html#method-i-cache_key">ActiveRecord::Base.cache_key</a> assisted by <a href="https://api.rubyonrails.org/classes/ActiveRecord/Integration.html#method-i-cache_version">ActiveRecord::Base.cache_version</a>:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">cache_key</span>
+<span class="o">=&gt;</span> <span class="s2">"users/1"</span>
+<span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">cache_version</span>
+<span class="o">=&gt;</span> <span class="s2">"20231219180601995645"</span>
+<span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="ss">:id</span><span class="p">).</span><span class="nf">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="nf">cache_key</span>
+<span class="o">=&gt;</span> <span class="s2">"users/query-68c0401234edb150f9926a6bed0ca8a1"</span>
+<span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="ss">:id</span><span class="p">).</span><span class="nf">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="nf">cache_version</span>
+<span class="o">=&gt;</span> <span class="s2">"10-20231205124058460998"</span>
+</code></pre></div></div>
+
+<p>In the above example, note that the version of model, which defaults to the last time they were updated, does not affect the <code class="language-plaintext highlighter-rouge">cache_key</code> result:</p>
+
+<ol>
+  <li>The <code class="language-plaintext highlighter-rouge">cache_key</code> for an ActiveRecord model follows the <code class="language-plaintext highlighter-rouge">{model_name}/{id}</code> format.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">cache_key</code> for a query is a digest of the SQL code generated by <code class="language-plaintext highlighter-rouge">ActiveRecord::Relation#to_sql</code> used to fetch the collection from the database.</li>
+</ol>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">touch</span>
+<span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">cache_key</span>
+<span class="o">=&gt;</span> <span class="s2">"users/1"</span>
+<span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">cache_version</span>
+<span class="o">=&gt;</span>  <span class="s2">"20231219181041677933"</span>
+<span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="ss">:id</span><span class="p">).</span><span class="nf">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="nf">cache_key</span>
+<span class="o">=&gt;</span> <span class="s2">"users/query-68c0401234edb150f9926a6bed0ca8a1"</span>
+<span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="ss">:id</span><span class="p">).</span><span class="nf">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="nf">cache_version</span>
+<span class="o">=&gt;</span> <span class="s2">"10-20231219181041677933"</span>
+</code></pre></div></div>
+
+<p>This behavior allows for key reuse and is controlled by the config.active_record.cache_versioning and config.active_record.collection_cache_versioning options (both default to true for Rails &gt;= 6.0).</p>
+
+<p>Individualized cache versioning settings can be configured on a model level:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">cache_versioning</span> <span class="o">=</span> <span class="kp">false</span>            <span class="c1"># For single records</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">collection_cache_versioning</span> <span class="o">=</span> <span class="kp">false</span> <span class="c1"># For relations</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">cache_key</span>
+<span class="o">=&gt;</span> <span class="s2">"users/1-20231219181255807906"</span>
+<span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">cache_version</span>
+<span class="o">=&gt;</span> <span class="kp">nil</span>
+<span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="ss">:id</span><span class="p">).</span><span class="nf">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="nf">cache_key</span>
+<span class="o">=&gt;</span> <span class="s2">"users/query-e5105e60511ed720db628c11bb103c62-10-20231219181255807906"</span>
+<span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="ss">:id</span><span class="p">).</span><span class="nf">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="nf">cache_version</span>
+<span class="o">=&gt;</span> <span class="kp">nil</span>
+</code></pre></div></div>
+
+<h2 id="why-is-it-useful">Why is it useful?</h2>
+
+<p>It all looks interesting. We have the option to configure the cache key, but one might still ask what benefits key reuse provides. And it’s indeed a valid question!</p>
+
+<p>Prior to Rails 6, where the cache versioning feature was not available, every time an updated object was passed to the <code class="language-plaintext highlighter-rouge">fetch</code> method, another entry was written to the cache while the previous one (stale) was kept around until it was manually removed or the expiry time reached.</p>
+
+<p>With cache versioning disabled, the following code will keep three cache entries for the same object in a cache store:</p>
+
+<p><em>The examples above assume Redis is used as a cache store</em></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Rails.fetch(user.cache_key) is equivalent of Rails.fetch(user) with cache versioning disabled</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="nf">cache_key</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">user</span><span class="p">.</span><span class="nf">to_json</span>
+<span class="k">end</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">touch</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="nf">cache_key</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">user</span><span class="p">.</span><span class="nf">to_json</span> <span class="c1"># new entry is written to cache store</span>
+<span class="k">end</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">touch</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="nf">cache_key</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">user</span><span class="p">.</span><span class="nf">to_json</span> <span class="c1"># new entry is written to cache store</span>
+<span class="k">end</span>
+
+<span class="c1"># Check the count of keys in Redis with the pattern 'users*'</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">redis</span><span class="p">.</span><span class="nf">then</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">keys</span><span class="p">(</span><span class="s1">'users*'</span><span class="p">)</span> <span class="p">}.</span><span class="nf">size</span> <span class="c1"># 3</span>
+</code></pre></div></div>
+
+<p>With cache versioning enabled, the new version will replace the existing entry in the cache store, leading to a smaller data size in the store:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Rails.fetch(user.cache_key, version: user.cache_version) is equivalent of Rails.fetch(user) with cache versioning enabled</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="nf">cache_key</span><span class="p">,</span> <span class="ss">version: </span><span class="n">user</span><span class="p">.</span><span class="nf">cache_version</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">user</span><span class="p">.</span><span class="nf">to_json</span>
+<span class="k">end</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">touch</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="nf">cache_key</span><span class="p">,</span> <span class="ss">version: </span><span class="n">user</span><span class="p">.</span><span class="nf">cache_version</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">user</span><span class="p">.</span><span class="nf">to_json</span> <span class="c1"># existing entry is updated in cache store</span>
+<span class="k">end</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">touch</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="nf">cache_key</span><span class="p">,</span> <span class="ss">version: </span><span class="n">user</span><span class="p">.</span><span class="nf">cache_version</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">user</span><span class="p">.</span><span class="nf">to_json</span> <span class="c1"># existing entry is updated cache store</span>
+<span class="k">end</span>
+
+<span class="c1"># Check the count of keys in Redis with the pattern 'users*'</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">redis</span><span class="p">.</span><span class="nf">then</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">keys</span><span class="p">(</span><span class="s1">'users*'</span><span class="p">)</span> <span class="p">}.</span><span class="nf">size</span> <span class="c1"># 1</span>
+</code></pre></div></div>
+
+<h3 id="in-conclusion">In Conclusion</h3>
+
+<p>Ruby on Rails continually seeks ways to improve its performance to build better web applications. As demonstrated in the examples above, Rails 6 introduced a refined caching process that significantly reduces data size and eliminates stale entries from the cache store.</p>
+
+<p>With the ability to control when cache entries are updated, cache key versioning becomes a tweak to help scale applications. Whether managing individual records or collections, this nuanced approach provides developers with more granular control.</p>
+
+  </content >
+</article>
+
+        </div>
+      </div>
+
+      <footer id="footer" class="container mx-auto">
+  <div class="flex flex-col items-center justify-between border-t border-grey-lighter py-10 sm:flex-row sm:py-12">
+    <p class="font-body font-light text-primary">
+      &copy; 2023 Lucas Mendelowski
+    </p>
+    <div class="flex items-center pt-5 gap-5 sm:pt-0">
+      
+        <a href="https://github.com/lcmen" target="_blank" aria-label="github">
+          <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-github"></i>
+        </a>
+      
+        <a href="https://www.linkedin.com/in/lucasmendelowski/" target="_blank" aria-label="linkedin">
+          <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-linkedin"></i>
+        </a>
+      
+        <a href="https://twitter.com/lcmen_" target="_blank" aria-label="twitter">
+          <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-twitter"></i>
+        </a>
+      
+    </div>
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>
