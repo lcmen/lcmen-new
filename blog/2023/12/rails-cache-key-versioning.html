@@ -214,7 +214,7 @@
 
 <h2 id="key-versioning">Key versioning</h2>
 
-<p>All the little caching helpers presented above rely on <a href="https://api.rubyonrails.org/classes/ActiveRecord/Integration.html#method-i-cache_key">ActiveRecord::Base.cache_key</a> assisted by <a href="https://api.rubyonrails.org/classes/ActiveRecord/Integration.html#method-i-cache_version">ActiveRecord::Base.cache_version</a>:</p>
+<p>All the little caching helpers presented above rely on <a href="https://api.rubyonrails.org/classes/ActiveRecord/Integration.html#method-i-cache_key">ActiveRecord::Base.cache_key</a> and <a href="https://api.rubyonrails.org/classes/ActiveRecord/Integration.html#method-i-cache_version">ActiveRecord::Base.cache_version</a> methods:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">cache_key</span>
 <span class="o">=&gt;</span> <span class="s2">"users/1"</span>
@@ -244,9 +244,9 @@
 <span class="o">=&gt;</span> <span class="s2">"10-20231219181041677933"</span>
 </code></pre></div></div>
 
-<p>This behavior allows for key reuse and is controlled by the config.active_record.cache_versioning and config.active_record.collection_cache_versioning options (both default to true for Rails &gt;= 6.0).</p>
+<p>This behavior allows for key reuse and is controlled by the <code class="language-plaintext highlighter-rouge">config.active_record.cache_versioning</code> and <code class="language-plaintext highlighter-rouge">config.active_record.collection_cache_versioning</code> options (both default to true for Rails &gt;= 6.0).</p>
 
-<p>Individualized cache versioning settings can be configured on a model level:</p>
+<p>Cache versioning setting can be customized on the individual model as well:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
   <span class="nb">self</span><span class="p">.</span><span class="nf">cache_versioning</span> <span class="o">=</span> <span class="kp">false</span>            <span class="c1"># For single records</span>
