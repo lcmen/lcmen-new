@@ -184,7 +184,7 @@
     </p>
     <span>//</span>
     <p class="font-light">
-      2 min read
+      3 min read
     </p>
   </div>
   <content class="prose prose max-w-none">
@@ -272,8 +272,6 @@
 
 <p>With cache versioning disabled, the following code will keep three cache entries for the same object in a cache store:</p>
 
-<p><em>The examples above assume Redis is used as a cache store</em></p>
-
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Rails.fetch(user.cache_key) is equivalent of Rails.fetch(user) with cache versioning disabled</span>
 <span class="no">Rails</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="nf">cache_key</span><span class="p">)</span> <span class="k">do</span>
   <span class="n">user</span><span class="p">.</span><span class="nf">to_json</span>
@@ -290,6 +288,8 @@
 <span class="c1"># Check the count of keys in Redis with the pattern 'users*'</span>
 <span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">redis</span><span class="p">.</span><span class="nf">then</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">keys</span><span class="p">(</span><span class="s1">'users*'</span><span class="p">)</span> <span class="p">}.</span><span class="nf">size</span> <span class="c1"># 3</span>
 </code></pre></div></div>
+
+<p><em>The example above uses Redis as the cache store</em></p>
 
 <p>With cache versioning enabled, the new version will replace the existing entry in the cache store, leading to a smaller data size in the store:</p>
 
@@ -309,6 +309,8 @@
 <span class="c1"># Check the count of keys in Redis with the pattern 'users*'</span>
 <span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">redis</span><span class="p">.</span><span class="nf">then</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">keys</span><span class="p">(</span><span class="s1">'users*'</span><span class="p">)</span> <span class="p">}.</span><span class="nf">size</span> <span class="c1"># 1</span>
 </code></pre></div></div>
+
+<p><em>The example above uses Redis as the cache store</em></p>
 
 <h3 id="in-conclusion">In Conclusion</h3>
 
