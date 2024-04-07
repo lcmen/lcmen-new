@@ -198,7 +198,7 @@
 
 <p>This behavior occurs because the image directory (the target of our make) already exists.</p>
 
-<p>To address this issue, the .PHONY directive comes into play. By listing image under the .PHONY directive, we instruct make to treat image as a phony target. This means that make will execute the image command regardless of whether the image file or directory exists:</p>
+<p>To address this issue, the <code class="language-plaintext highlighter-rouge">.PHONY</code> directive comes into play. By listing image under the <code class="language-plaintext highlighter-rouge">.PHONY</code> directive, we instruct make to treat image as a phony target. This means that make will execute the image command regardless of whether the image file or directory exists:</p>
 
 <div class="language-makefile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">.PHONY</span><span class="o">:</span> <span class="nf">image</span>
 <span class="nl">image</span><span class="o">:</span>
