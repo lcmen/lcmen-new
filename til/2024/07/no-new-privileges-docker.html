@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <title>Intro - Lucas Mendelowski</title>
+    <title>Using no-new-privileges in Docker - Lucas Mendelowski</title>
 
     <meta charset="utf-8" />
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
-    <meta name="description" content="I'm Lucas, an experienced software engineer focused on building web applications." />
+    <meta name="description" content="Learn how to use the no-new-privileges security option in Docker to prevent containers from gaining additional privileges" />
     <meta name="turbo-cache-control">
 
-    <meta property="og:title" content="Intro - Lucas Mendelowski" />
-    <meta property="og:description" content="I'm Lucas, an experienced software engineer focused on building web applications." />
+    <meta property="og:title" content="Using no-new-privileges in Docker - Lucas Mendelowski" />
+    <meta property="og:description" content="Learn how to use the no-new-privileges security option in Docker to prevent containers from gaining additional privileges" />
     <meta property="og:image" content="https://www.mendelowski.com/assets/img/social.png" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:url" content="https://www.mendelowski.com" />
     <meta property="og:site_name" content="Lucas Mendelowski" />
 
-    <meta name="twitter:title" content="Intro - Lucas Mendelowski" />
-    <meta name="twitter:description" content="I'm Lucas, an experienced software engineer focused on building web applications." />
+    <meta name="twitter:title" content="Using no-new-privileges in Docker - Lucas Mendelowski" />
+    <meta name="twitter:description" content="Learn how to use the no-new-privileges security option in Docker to prevent containers from gaining additional privileges" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="lmendelowski" />
     <meta name="twitter:site" content="lmendelowski" />
     <meta name="twitter:image" content="https://www.mendelowski.com/assets/img/social.png" />
 
-    <link rel="canonical" href="https://www.mendelowski.com/" />
+    <link rel="canonical" href="https://www.mendelowski.com/til/2024/07/no-new-privileges-docker" />
     <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
     <link crossorigin="crossorigin" href="https://fonts.gstatic.com" rel="preconnect" />
     <link crossorigin="crossorigin" href="https://unpkg.com" rel="preconnect" />
@@ -161,95 +161,8 @@
 
       <div>
         <div class="container mx-auto">
-          <div class="border-b border-grey-lighter py-16 lg:py-20">
-  <div>
-    <img srcset="/assets/img/author_2x.png 2x" src="/assets/img/author.png" width="64" height="64" alt="author" />
-  </div>
-  <h1 class="pt-3 font-body text-4xl font-semibold text-primary md:text-5xl lg:text-6xl">
-    Hi, I’m Lucas
-  </h1>
-  <p class="pt-3 font-body text-xl font-light text-primary">
-    I thrive on new challenges and eagerly embrace every opportunity to learn.
-  </p>
-  <a
-    href="/contact"
-    class="mt-12 block bg-secondary px-10 py-4 text-center font-body text-xl font-semibold text-white transition-colors hover:bg-green sm:inline-block sm:text-left sm:text-2xl"
-    aria-label="Contact me"
-  >Say Hello!</a>
-</div>
-
-<div class="border-b border-grey-lighter py-16 lg:py-20">
-  <div class="flex items-center pb-6">
-    <img src="/assets/img/icon-story.png" width="21" height="29" alt="icon story" />
-    <h2 class="ml-3 font-body text-2xl font-semibold text-primary">My Story</h2>
-  </div>
-  <div>
-    <p class="font-body font-light text-primary">
-      I am a detail-oriented software engineer with a diverse background,
-      having worked with companies worldwide, from start-ups to medium-sized organizations.
-      <br />
-      <br />
-      I thrive on new challenges and eagerly embrace every opportunity to learn,
-      whether it involves tackling a fresh project, mastering new tools, or assuming a different role.
-      <br />
-      <br />
-      Currently, I leverage the power of Ruby, Rails, and React to deliver exceptional results.
-      Moreover, I am actively expanding my skill set by delving into the realms of Elixir and Go.
-    </p>
-  </div>
-</div>
-
-<div class="py-16 lg:py-20">
-  <div class="flex items-center pb-6">
-    <img src="/assets/img/icon-post.png" width="32" height="21" alt="icon story" />
-    <h2 class="ml-3 font-body text-2xl font-semibold text-primary">Latest Content</h2>
-  </div>
-  <div class="lg:flex">
-    <div class="lg:w-1/2 lg:mb-0 mb-6">
-      
-        <div class="">
+          <article class="mb-8">
   <p class="mb-4">
-    
-    
-      <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
-  #ruby
-</span>
-
-    
-      <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
-  #ruby on rails
-</span>
-
-    
-  </p>
-  <a
-    href="/blog/2023/12/rails-cache-key-versioning"
-    class="block font-body text-lg font-semibold text-primary transition-colors hover:text-green"
-    aria-label="Rails cache - key versioning"
-  >Rails cache - key versioning</a>
-  <div class="flex items-center font-body gap-2 pt-4 text-grey">
-    <p class="font-light">
-      December 20, 2023
-    </p>
-  </div>
-</div>
-
-        <a
-          href="/blog/"
-          class="mt-3 flex items-center font-body italic text-green transition-colors hover:text-secondary"
-          aria-label="All posts"
-        >
-          All posts
-          <img src="/assets/img/long-arrow-right.png" width="16" height="10" class="ml-3" alt="arrow right" />
-        </a>
-      
-    </div>
-    <div class="lg:w-1/2">
-      
-      
-        <div class="">
-  <p class="mb-4">
-    
     
       <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
   #docker
@@ -257,30 +170,57 @@
 
     
   </p>
-  <a
-    href="/til/2024/07/no-new-privileges-docker"
-    class="block font-body text-lg font-semibold text-primary transition-colors hover:text-green"
-    aria-label="Using no-new-privileges in Docker"
-  >Using no-new-privileges in Docker</a>
-  <div class="flex items-center font-body gap-2 pt-4 text-grey">
+  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
+    Using no-new-privileges in Docker
+  </h2>
+  <div class="flex items-center gap-2 py-4 font-body text-grey">
     <p class="font-light">
       July 11, 2024
     </p>
+    <span>//</span>
+    <p class="font-light">
+      1 min read
+    </p>
   </div>
-</div>
+  <content class="prose prose max-w-none">
+    <p>The <code class="language-plaintext highlighter-rouge">no-new-privileges</code> security option in Docker prevents a container from gaining additional privileges after the initial execution.</p>
 
-        <a
-          href="/til/"
-          class="mt-3 flex items-center font-body italic text-green transition-colors hover:text-secondary"
-          aria-label="All notes"
-        >
-          All notes
-          <img src="/assets/img/long-arrow-right.png" width="16" height="10" class="ml-3" alt="arrow right" />
-        </a>
-      
-    </div>
-  </div>
-</div>
+<p>This option is particularly useful in scenarios where you want to restrict the capabilities of a container to the bare minimum required for its operation.</p>
+
+<p>Let’s consider a simple example to understand how <code class="language-plaintext highlighter-rouge">no-new-privileges</code> works. Imagine you have a <code class="language-plaintext highlighter-rouge">Dockerfile</code> running the Ubuntu distribution with the following content:</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:22.04</span>
+
+<span class="k">RUN </span>apt update <span class="o">&amp;&amp;</span> apt <span class="nt">-y</span> <span class="nb">install sudo</span>
+
+<span class="k">RUN </span>useradd <span class="nt">-m</span> docker <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"docker:docker"</span> | chpasswd <span class="o">&amp;&amp;</span> adduser docker <span class="nb">sudo</span>
+
+<span class="k">USER</span><span class="s"> docker</span>
+<span class="k">CMD</span><span class="s"> /bin/bash</span>
+</code></pre></div></div>
+
+<p>If you build this image then run  it, you’ll notice that the container has the ability to execute commands with elevated privileges using <code class="language-plaintext highlighter-rouge">sudo</code>.</p>
+
+<p>This might be especially problematic when container is running in privileged mode, as it can potentially escalate its privileges to the host system.</p>
+
+<p>Let’s run try to run the container with <code class="language-plaintext highlighter-rouge">no-new-privileges</code> enabled:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-it</span> <span class="nt">--security-opt</span> no-new-privileges myimage
+</code></pre></div></div>
+
+<p>and try to switch to the root user using <code class="language-plaintext highlighter-rouge">sudo su -</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker@a0f8de47d2f2:/$ sudo su -
+sudo: The "no new privileges" flag is set, which prevents sudo from running as root.
+sudo: If sudo is running in a container, you may need to adjust the container configuration to disable the flag.
+</code></pre></div></div>
+
+<p>you will see that the <code class="language-plaintext highlighter-rouge">no-new-privileges</code> option prevents the container from gaining additional privileges.</p>
+
+<p>Next time you run your docker containers, consider using the <code class="language-plaintext highlighter-rouge">no-new-privileges</code> option to limit their privileges.</p>
+
+  </content >
+</article>
 
         </div>
       </div>
