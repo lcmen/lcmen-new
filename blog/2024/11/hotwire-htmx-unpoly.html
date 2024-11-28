@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Hotwire vs HTMX vs Unpoly - Lucas Mendelowski</title>
+
+    <meta charset="utf-8" />
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
+    <meta name="description" content="Hotwire, HTMX, and Unpoly for building modern UIs." />
+    <meta name="turbo-cache-control">
+
+    <meta property="og:title" content="Hotwire vs HTMX vs Unpoly - Lucas Mendelowski" />
+    <meta property="og:description" content="Hotwire, HTMX, and Unpoly for building modern UIs." />
+    <meta property="og:image" content="https://www.mendelowski.com/assets/img/social.png" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://www.mendelowski.com" />
+    <meta property="og:site_name" content="Lucas Mendelowski" />
+
+    <meta name="twitter:title" content="Hotwire vs HTMX vs Unpoly - Lucas Mendelowski" />
+    <meta name="twitter:description" content="Hotwire, HTMX, and Unpoly for building modern UIs." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="lmendelowski" />
+    <meta name="twitter:site" content="lmendelowski" />
+    <meta name="twitter:image" content="https://www.mendelowski.com/assets/img/social.png" />
+
+    <link rel="canonical" href="https://www.mendelowski.com/blog/2024/11/hotwire-htmx-unpoly" />
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
+    <link crossorigin="crossorigin" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link crossorigin="crossorigin" href="https://unpkg.com" rel="preconnect" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" /></noscript>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css" media="screen" data-turbo-track="reload">
+    <script src="/assets/js/main.js" data-turbo-track="reload"></script>
+    <script src="https://unpkg.com/@hotwired/turbo" defer></script>
+  </head>
+  <body>
+    <div id="main">
+      <header id="header" class="container mx-auto" data-turbo-permanent>
+  <div class="flex items-center justify-between py-6 lg:py-10">
+    <a href="/" class="flex items-center" aria-label="Homepage">
+      <img src="/assets/img/logo.svg" width="44" height="36" alt="logo" />
+    </a>
+    <div class="flex items-center lg:hidden">
+      <button id="menu" class="group z-50" aria-label="Mobile menu">
+        <svg
+          width="24"
+          height="15"
+          xmlns="http://www.w3.org/2000/svg"
+          class="relative z-50 fill-current text-primary transition-transform group-[.active]:fill-white group-[.active]:rotate-90"
+        >
+          <g fill-rule="evenodd">
+            <rect width="24" height="3" />
+            <rect y="6" width="24" height="3" />
+            <rect y="12" width="24" height="3" />
+          </g>
+        </svg>
+      </button>
+      <nav class="pointer-events-none fixed inset-0 z-30 flex bg-black bg-opacity-80 opacity-0 transition-opacity lg:hidden duration-300">
+        <div class="ml-auto w-2/3 bg-green p-4 md:w-1/3">
+          <ul class="mt-8 flex flex-col">
+            <li>
+              <a
+                href="/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Intro"
+              >Intro</a>
+            </li>
+
+            <li>
+              <a
+                href="/blog/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Blog"
+              >Blog</a>
+            </li>
+
+            <li>
+              <a
+                href="/til/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Today I Learned"
+              >Til</a>
+            </li>
+
+            <li>
+              <a
+                href="/uses/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Uses"
+              >Uses</a>
+            </li>
+
+            <li>
+              <a
+                href="/contact/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Contact"
+              >Contact</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="hidden lg:block">
+      <ul class="flex items-center">
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Intro"
+          >Intro</a>
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/blog/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Blog"
+          >Blog</a>
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/til/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Today I Learned"
+          >Til</a>
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/uses/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Uses"
+          >Uses</a>
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/contact/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Contact"
+          >Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+
+      <div>
+        <div class="container mx-auto">
+          <article class="mb-8">
+  <p class="mb-4">
+    
+      <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
+  #JavaScript
+</span>
+
+    
+      <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
+  #HTML
+</span>
+
+    
+  </p>
+  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
+    Hotwire vs HTMX vs Unpoly
+  </h2>
+  <div class="flex items-center gap-2 py-4 font-body text-grey">
+    <p class="font-light">
+      November 01, 2024
+    </p>
+    <span>//</span>
+    <p class="font-light">
+      7 min read
+    </p>
+  </div>
+  <content class="prose prose max-w-none">
+    <p>In today’s web development landscape, there are numerous options for building responsive and interactive user interfaces. The most popular choices revolve around JavaScript frameworks for creating single-page applications (SPAs) powered by REST API or GraphQL backends, such as React, Vue.js, or Svelte. As a web developer with extensive experience in the <a href="https://rubyonrails.org/">Ruby on Rails</a> framework for building backends, I have always preferred solutions that leverage server-side rendered views before transitioning to a fully decoupled front-end and back-end architecture.</p>
+
+<p>Currently, the most popular options for building interactive UIs with server-side rendering are:</p>
+
+<ul>
+  <li><a href="https://hotwired.dev/">Hotwire</a></li>
+  <li><a href="https://htmx.org/">HTMX</a></li>
+  <li><a href="https://unpoly.com/">Unpoly</a></li>
+</ul>
+
+<p>In this article, I will compare these libraries in the context of a small application I recently developed. As an engineer with an interest in understanding the underlying mechanisms, I grew tired of reading various discussions on Reddit and HackerNews. I decided to roll up my sleeves and build a simple TODO application (because there can never be enough of those, right?) to compare these libraries based on typical web application requirements such as partial updates, form validation, and modals.</p>
+
+<p>The source code for the demo application is available on <a href="https://github.com/lcmen/hotwire-htmx-unpoly">GitHub</a>, and the application can be viewed in the browser <a href="https://hotwire-htmx-unpoly.onrender.com/">here</a>. Please note that it is hosted on a free Render.io dyno, so it may take approximately 50 seconds to boot on the first request, and the database resets on every cold boot.</p>
+
+<h2 id="introduction-to-the-contenders">Introduction to the Contenders</h2>
+
+<p>Before delving into the implementation differences from a developer’s perspective, let’s briefly examine each library to understand their motivations.</p>
+
+<h3 id="hotwire">Hotwire</h3>
+
+<p><a href="https://hotwired.dev/">Hotwire</a> was developed by 37 Signals to replace Turbolinks with a more modern alternative providing additional capabilities. It comprises three elements:</p>
+
+<ul>
+  <li><a href="https://turbo.hotwired.dev/">Turbo</a> - the successor to <a href="https://github.com/turbolinks/turbolinks">Turbolinks</a></li>
+  <li><a href="https://stimulus.hotwired.dev/">Stimulus.js</a> - a JavaScript framework that uses <code class="language-plaintext highlighter-rouge">data</code> attributes as a source of truth to enhance HTML</li>
+  <li><a href="https://native.hotwired.dev/">Hotwire Native</a> - a framework for building native mobile apps using the same HTML and CSS as web applications</li>
+</ul>
+
+<p>In this article, I will focus on the first two packages, as I have no experience with building mobile applications.</p>
+
+<p>Turbo supports updating page elements in three ways:</p>
+
+<ol>
+  <li>Turbo Drive - replaces the <code class="language-plaintext highlighter-rouge">&lt;body&gt;</code> of the page without reloading and parsing assets from the <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> element</li>
+  <li>
+    <p>Turbo Frame - replaces a part of the page</p>
+
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nt">&lt;turbo-frame</span> <span class="na">id=</span><span class="s">"main"</span><span class="nt">&gt;</span>
+   <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/"</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;</span>
+   <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/blog"</span><span class="nt">&gt;</span>Blog<span class="nt">&lt;/a&gt;</span>
+   <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/aboutme"</span><span class="nt">&gt;</span>About me<span class="nt">&lt;/a&gt;</span>
+ <span class="nt">&lt;/turbo-frame&gt;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Turbo Stream - updates a part of the page by performing a specified action (e.g., append, remove, replace). It can be delivered as a response to a regular request (e.g., form submission) or WebSocket broadcasts.</p>
+
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nt">&lt;turbo-stream</span> <span class="na">action=</span><span class="s">"append"</span> <span class="na">target=</span><span class="s">"#main"</span><span class="nt">&gt;</span>
+   <span class="nt">&lt;template&gt;</span>
+     <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/contact"</span><span class="nt">&gt;</span>Contact me<span class="nt">&lt;/a&gt;</span>
+   <span class="nt">&lt;/template&gt;</span>
+ <span class="nt">&lt;/turbo-stream&gt;</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>Hotwire, specifically Turbo Stream, is the only tool fully supported by ActionCable out of the box.</p>
+
+<h3 id="htmx">HTMX</h3>
+
+<p><a href="https://htmx.org/">HTMX</a> is a continuation of the idea seeded by <a href="https://intercoolerjs.org/">Intercooler.js</a> - hypermedia-powered applications. In simple terms, it means using HTML <code class="language-plaintext highlighter-rouge">data</code> attributes to extend the default request-response capabilities of HTTP requests. Intercooler was powered by <a href="https://jquery.com/">jQuery</a>, but as browsers adopted the latest JavaScript standards, the HTMX author rewrote it using vanilla JavaScript, making the core leaner with a smaller set of attributes while leaving additional features to extensions.</p>
+
+<p>HTMX relies on specifying UI behavior using various <code class="language-plaintext highlighter-rouge">hx-</code> data attributes, e.g.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/aboutme"</span> <span class="na">hx-target=</span><span class="s">".main"</span><span class="nt">&gt;</span>About me<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+
+<p>HTMX is also very explicit - behavior for each element should be defined separately however to reduce repetition it also supports a form of inheritance from parent elements, e.g.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">hx-target=</span><span class="s">".main"</span> <span class="na">hx-boost=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/"</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/blog"</span><span class="nt">&gt;</span>Blog<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/aboutme"</span><span class="nt">&gt;</span>About me<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>Besides <code class="language-plaintext highlighter-rouge">data</code> driven behaviors, HTMX includes basic JavaScript API for the most common operations (updating CSS classes, triggering and handling events, etc.). It’s very simple so when more JavaScript interactivity is needed, developers usually reach for <a href="https://alpinejs.dev/">Alpine.js</a> framework.</p>
+
+<p>HTMX also includes a rich <a href="https://htmx.org/extensions/">extensions inventory</a> to make the UI even snappier by taking advantage of background preloads, morphing, merging <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> tags, etc.</p>
+
+<h3 id="unpoly">Unpoly</h3>
+
+<p><a href="https://unpoly.com/">Unpoly</a> was created at <a href="https://makandra.de">Makandra</a> as a response to the increasing complexity of the frontend tools. At the beginning, it relied on jQuery and was written in CoffeeScript but with version 2, the author dropped jQuery from its dependencies and rewrote the framework using vanilla JavaScript.</p>
+
+<p>Similar to HTMX, Unpoly also relies on HTMX <code class="language-plaintext highlighter-rouge">data</code> attributes (specifically <code class="language-plaintext highlighter-rouge">up-</code> ones) for defining behaviors. On the other hand it’s more implicit thanks to its convention that can be customized through multiple configuration options, e.g.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#</span> <span class="nx">Handle</span> <span class="nx">all</span> <span class="nx">links</span> <span class="nx">via</span> <span class="nx">Ajax</span> <span class="nx">by</span> <span class="k">default</span>
+<span class="nx">up</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">followSelectors</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="dl">'</span><span class="s1">a[href]</span><span class="dl">'</span><span class="p">)</span>
+<span class="err">#</span> <span class="nx">Submit</span> <span class="nx">all</span> <span class="nx">forms</span> <span class="nx">via</span> <span class="nx">Ajax</span> <span class="nx">by</span> <span class="k">default</span>
+<span class="nx">up</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">submitSelectors</span><span class="p">.</span><span class="nf">push</span><span class="p">([</span><span class="dl">'</span><span class="s1">form</span><span class="dl">'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Also, in addition to manually defining targets for each Ajax interaction, Unpoly supports the concept of <a href="https://unpoly.com/up.layer">layers</a>. These layers (root, modal, drawer, popup, and cover) defines how new content should be loaded to the existing page, e.g.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/contact"</span> <span class="na">up-layer=</span><span class="s">"modal"</span><span class="nt">&gt;</span>Contact me<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/menu"</span> <span class="na">up-layer=</span><span class="s">"drawer"</span><span class="nt">&gt;</span>Menu<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+
+<p>If we could compare HTMX and Unpoly to backend frameworks, HTMX would be Django then Unpoly would be Ruby on Rails.</p>
+
+<p>Btw. As far as I’m aware, Unpoly is the only player from our trio that provides migration scripts to help with upgrading in your applications.</p>
+
+<h2 id="todo-application">Todo Application</h2>
+
+<p>We will evaluate each of the libraries in the context of a simple <a href="https://github.com/lcmen/hotwire-htmx-unpoly">TODO application</a> that I built recently. We will look at each version in terms of supporting the following features:</p>
+
+<ol>
+  <li>Loading form in modal</li>
+  <li>Performing server-side form validation (within modal)</li>
+  <li>Redirecting from modal after successful form submission</li>
+  <li>Partially updating the page on complete toggle</li>
+  <li>Maintaining scroll position (needed for keeping the position when removing todos on longer pages)</li>
+</ol>
+
+<p>The application I built follows a progressive enhancement philosophy where all variants are powered by the same controller (with small tweaks for redirects) and serves full HTML responses (no turbo streams).</p>
+
+<h3 id="modals">Modals</h3>
+
+<p>Modals for Hotwire and HTMX are powered by native <code class="language-plaintext highlighter-rouge">&lt;dialog&gt;</code> element with small sprinkle of JavaScript either via <code class="language-plaintext highlighter-rouge">Stimulus.js</code> controller (for Hotwire) or <code class="language-plaintext highlighter-rouge">Alpine.js</code> component (for HTMX) to automatically open the modal when new content is loaded inside or to perform a nice animation on close.</p>
+
+<h4 id="stimulus-controller--turbo-frame">Stimulus controller + Turbo Frame:</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Controller</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@hotwired/stimulus</span><span class="dl">"</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="kd">class</span> <span class="nc">extends</span> <span class="nx">Controller</span> <span class="p">{</span>
+  <span class="kd">static</span> <span class="nx">values</span> <span class="o">=</span> <span class="p">{</span> <span class="na">open</span><span class="p">:</span> <span class="nb">Boolean</span> <span class="p">}</span>
+
+  <span class="nf">backdropClose</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">nodeName</span> <span class="o">==</span> <span class="dl">"</span><span class="s2">DIALOG</span><span class="dl">"</span><span class="p">)</span> <span class="k">this</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="nf">closeWithAnimation</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">openValue</span><span class="p">)</span> <span class="k">this</span><span class="p">.</span><span class="nf">close</span><span class="p">(</span><span class="nx">event</span><span class="p">).</span><span class="nf">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">detail</span><span class="p">.</span><span class="nf">resume</span><span class="p">())</span>
+  <span class="p">}</span>
+
+  <span class="nf">open</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">openValue</span> <span class="o">=</span> <span class="kc">true</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nf">showModal</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="nf">close</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="nx">event</span><span class="p">.</span><span class="nf">preventDefault</span><span class="p">()</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nf">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">closing</span><span class="dl">"</span><span class="p">,</span> <span class="dl">""</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">all</span><span class="p">(</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nf">getAnimations</span><span class="p">().</span><span class="nf">map</span><span class="p">((</span><span class="nx">animation</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">animation</span><span class="p">.</span><span class="nx">finished</span><span class="p">),</span>
+    <span class="p">).</span><span class="nf">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nf">removeAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">closing</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">openValue</span> <span class="o">=</span> <span class="kc">false</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dialog</span>
+  <span class="na">data-controller=</span><span class="s">"modal"</span>
+  <span class="na">data-action=</span><span class="s">"turbo:frame-load-&gt;modal#open turbo:before-render@window-&gt;modal#closeWithAnimation click-&gt;modal#backdropClose"</span>
+<span class="nt">&gt;</span>
+  <span class="nt">&lt;</span><span class="err">%=</span> <span class="na">turbo_frame_tag</span> <span class="err">"</span><span class="na">modal</span><span class="err">"</span> <span class="err">%</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/dialog&gt;</span>
+</code></pre></div></div>
+
+<h4 id="alpinejs-component--html">Alpine.js component + HTML</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nf">Modal</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nf">show</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nf">showModal</span><span class="p">()</span>
+    <span class="p">},</span>
+    <span class="nf">close</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nf">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">closing</span><span class="dl">"</span><span class="p">,</span> <span class="dl">""</span><span class="p">)</span>
+
+      <span class="nb">Promise</span><span class="p">.</span><span class="nf">all</span><span class="p">(</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nf">getAnimations</span><span class="p">().</span><span class="nf">map</span><span class="p">((</span><span class="nx">animation</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">animation</span><span class="p">.</span><span class="nx">finished</span><span class="p">),</span>
+      <span class="p">).</span><span class="nf">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nf">removeAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">closing</span><span class="dl">"</span><span class="p">)</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+      <span class="p">})</span>
+    <span class="p">},</span>
+    <span class="nf">closeIfOutside</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">open</span> <span class="o">&amp;&amp;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">nodeName</span> <span class="o">==</span> <span class="dl">"</span><span class="s2">DIALOG</span><span class="dl">"</span><span class="p">)</span> <span class="k">this</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+    <span class="p">},</span>
+    <span class="nf">closeIfSuccessful</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if </span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">detail</span><span class="p">.</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">&lt;</span> <span class="mi">400</span><span class="p">)</span> <span class="k">this</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+    <span class="p">},</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dialog</span>
+  <span class="na">id=</span><span class="s">"modal"</span>
+  <span class="na">x-data=</span><span class="s">"modal"</span>
+  <span class="err">@</span><span class="na">click=</span><span class="s">"closeIfOutside"</span>
+  <span class="err">@</span><span class="na">htmx:after-request=</span><span class="s">"closeIfSuccessful"</span>
+  <span class="err">@</span><span class="na">htmx:after-swap=</span><span class="s">"show"</span>
+<span class="nt">&gt;</span>
+<span class="nt">&lt;/dialog&gt;</span>
+</code></pre></div></div>
+
+<h4 id="unpoly-1">Unpoly</h4>
+
+<p>Unpoly provides support for showing modals out of the box. I only needed to configure animations and apply some Tailwind CSS classes through the stylesheet.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">up</span><span class="p">.</span><span class="nx">layer</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">modal</span><span class="p">.</span><span class="nx">openAnimation</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">fade-in</span><span class="dl">'</span>
+<span class="nx">up</span><span class="p">.</span><span class="nx">layer</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">modal</span><span class="p">.</span><span class="nx">closeAnimation</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">fade-out</span><span class="dl">'</span>
+<span class="nx">up</span><span class="p">.</span><span class="nx">layer</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">modal</span><span class="p">.</span><span class="nx">openDuration</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="nx">up</span><span class="p">.</span><span class="nx">layer</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">modal</span><span class="p">.</span><span class="nx">closeDuration</span> <span class="o">=</span> <span class="mi">500</span>
+</code></pre></div></div>
+
+<p>Unpoly overlays support a range of <a href="https://unpoly.com/closing-overlays#close-conditions">close conditions</a>, including redirecting to a specific URL, making them particularly suitable for use with form submissions.</p>
+
+<h3 id="server-side-form-validation">Server side form validation</h3>
+
+<p>Display form validation errors within the modal works out of the box with Hotwire and Unpoly. For HTMX, I had to override <code class="language-plaintext highlighter-rouge">beforeSwap</code> event to treat 422 responses as swappable (by default only 200 and 300 responses are supported).</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">htmx:beforeSwap</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Allow 422 responses to swap as they are form validation errors</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">evt</span><span class="p">.</span><span class="nx">detail</span><span class="p">.</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">422</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">evt</span><span class="p">.</span><span class="nx">detail</span><span class="p">.</span><span class="nx">shouldSwap</span> <span class="o">=</span> <span class="kc">true</span>
+    <span class="nx">evt</span><span class="p">.</span><span class="nx">detail</span><span class="p">.</span><span class="nx">isError</span> <span class="o">=</span> <span class="kc">false</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<h3 id="redirect-after-form-submission">Redirect after form submission</h3>
+
+<p>For redirects, I had to make some tweaks for HTMX and Hotwire:</p>
+
+<ul>
+  <li>HTMX variant returns an empty body with <code class="language-plaintext highlighter-rouge">HX-Location</code> header to perform client-side redirects correctly in response to a successful form submission</li>
+  <li>
+    <p>Hotwire variant uses custom <code class="language-plaintext highlighter-rouge">turbo-stream</code> action to opt out of <code class="language-plaintext highlighter-rouge">&lt;turbo-frame&gt;</code> for redirect as failed form submissions should still render errors inside the turbo-frame.</p>
+
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">Turbo</span><span class="p">.</span><span class="nx">StreamActions</span><span class="p">.</span><span class="nx">redirect</span> <span class="o">=</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">Turbo</span><span class="p">.</span><span class="nf">visit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">target</span><span class="p">)</span>
+  <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>To use <code class="language-plaintext highlighter-rouge">Turbo.visit</code> to perform a redirect from JavaScript side, I had to disable caching to fix flickering during a redirect (page with open modal was served from the cache before showing the response from the server):</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"turbo-cache-control"</span> <span class="na">content=</span><span class="s">"no-cache"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<h3 id="partial-updates">Partial updates</h3>
+
+<p>Each of the libraries supports partial updates out of the box. They only differ in how desired behavior is specified. While Turbo relies on <code class="language-plaintext highlighter-rouge">&lt;turbo-frame&gt;</code> element or <code class="language-plaintext highlighter-rouge">is="turbo-frame"</code> attribute, HTMX requires <code class="language-plaintext highlighter-rouge">hx-select</code> and <code class="language-plaintext highlighter-rouge">hx-target</code> attributes, and Unpoly needs either <code class="language-plaintext highlighter-rouge">up-target</code> or <code class="language-plaintext highlighter-rouge">up-layer</code> attribute.</p>
+
+<p>For Unpoly, I had to disable caching for loading edit / new forms to make sure we always renders it with the latest state (new form with blank fields, edit form with the up to date todo values)</p>
+
+<h3 id="maintaining-scroll-position">Maintaining scroll position</h3>
+
+<p>Unpoly maintains scroll position by default but for Hotwire and HTMX I had to make some tweaks.</p>
+
+<ul>
+  <li>
+    <p>HTMX required setting one option in the config:</p>
+
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">htmx</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">scrollIntoViewOnBoost</span> <span class="o">=</span> <span class="kc">false</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Unfortunately, Hotwire required me to implement this functionality from scratch:</p>
+
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nb">window</span><span class="p">.</span><span class="nx">scrollPosition</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="nb">document</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">turbo:before-visit</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if </span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">preserveScroll</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="k">return</span>
+
+    <span class="nx">scrollPosition</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">scrollTop</span>
+  <span class="p">})</span>
+
+  <span class="nb">document</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">turbo:load</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if </span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">preserveScroll</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="k">return</span>
+
+    <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">=</span> <span class="nx">scrollPosition</span>
+  <span class="p">})</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>While each of these libraries enables the creation of responsive and interactive UIs, they do so in distinct ways and offer unique functionalities. Hotwire is particularly well-suited for scenarios requiring seamless integration with Rails, real-time updates via WebSockets, or building mobile applications. HTMX provides a straightforward approach to enhancing HTML with minimal JavaScript, making it ideal for developers who prioritize simplicity and explicit behavior. Unpoly, with its comprehensive set of features and conventions, offers a more declarative approach, minimizing the need for custom tweaks in common use cases.</p>
+
+  </content >
+</article>
+
+        </div>
+      </div>
+
+      <footer id="footer" class="container mx-auto">
+  <div class="flex flex-col items-center justify-between border-t border-grey-lighter py-10 sm:flex-row sm:py-12">
+    <p class="font-body font-light text-primary">
+      &copy; 2024 Lucas Mendelowski
+    </p>
+    <div class="flex items-center pt-5 gap-5 sm:pt-0">
+      
+        <a href="https://github.com/lcmen" target="_blank" aria-label="github">
+          <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-github"></i>
+        </a>
+      
+        <a href="https://www.linkedin.com/in/lucasmendelowski/" target="_blank" aria-label="linkedin">
+          <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-linkedin"></i>
+        </a>
+      
+        <a href="https://twitter.com/lmendelowski" target="_blank" aria-label="twitter">
+          <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-twitter"></i>
+        </a>
+      
+    </div>
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>
