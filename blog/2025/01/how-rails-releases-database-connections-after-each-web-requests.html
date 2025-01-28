@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>How Rails Releases Database Connections After Each Web Request - Lucas Mendelowski</title>
+
+    <meta charset="utf-8" />
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
+    <meta name="description" content="how Rails releases database connections back to the pool after each web request." />
+    <meta name="turbo-cache-control">
+
+    <meta property="og:title" content="How Rails Releases Database Connections After Each Web Request - Lucas Mendelowski" />
+    <meta property="og:description" content="how Rails releases database connections back to the pool after each web request." />
+    <meta property="og:image" content="https://www.mendelowski.com/assets/img/social.png" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://www.mendelowski.com" />
+    <meta property="og:site_name" content="Lucas Mendelowski" />
+
+    <meta name="twitter:title" content="How Rails Releases Database Connections After Each Web Request - Lucas Mendelowski" />
+    <meta name="twitter:description" content="how Rails releases database connections back to the pool after each web request." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="lmendelowski" />
+    <meta name="twitter:site" content="lmendelowski" />
+    <meta name="twitter:image" content="https://www.mendelowski.com/assets/img/social.png" />
+
+    <link rel="canonical" href="https://www.mendelowski.com/blog/2025/01/how-rails-releases-database-connections-after-each-web-requests" />
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
+    <link crossorigin="crossorigin" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link crossorigin="crossorigin" href="https://unpkg.com" rel="preconnect" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" /></noscript>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css" media="screen" data-turbo-track="reload">
+    <script src="/assets/js/main.js" data-turbo-track="reload"></script>
+    <script src="https://unpkg.com/@hotwired/turbo" defer></script>
+  </head>
+  <body>
+    <div id="main">
+      <header id="header" class="container mx-auto" data-turbo-permanent>
+  <div class="flex items-center justify-between py-6 lg:py-10">
+    <a href="/" class="flex items-center" aria-label="Homepage">
+      <img src="/assets/img/logo.svg" width="44" height="36" alt="logo" />
+    </a>
+    <div class="flex items-center lg:hidden">
+      <button id="menu" class="group z-50" aria-label="Mobile menu">
+        <svg
+          width="24"
+          height="15"
+          xmlns="http://www.w3.org/2000/svg"
+          class="relative z-50 fill-current text-primary transition-transform group-[.active]:fill-white group-[.active]:rotate-90"
+        >
+          <g fill-rule="evenodd">
+            <rect width="24" height="3" />
+            <rect y="6" width="24" height="3" />
+            <rect y="12" width="24" height="3" />
+          </g>
+        </svg>
+      </button>
+      <nav class="pointer-events-none fixed inset-0 z-30 flex bg-black bg-opacity-80 opacity-0 transition-opacity lg:hidden duration-300">
+        <div class="ml-auto w-2/3 bg-green p-4 md:w-1/3">
+          <ul class="mt-8 flex flex-col">
+            <li>
+              <a
+                href="/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Intro"
+              >Intro</a>
+            </li>
+
+            <li>
+              <a
+                href="/blog/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Blog"
+              >Blog</a>
+            </li>
+
+            <li>
+              <a
+                href="/til/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Today I Learned"
+              >Til</a>
+            </li>
+
+            <li>
+              <a
+                href="/uses/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Uses"
+              >Uses</a>
+            </li>
+
+            <li>
+              <a
+                href="/contact/"
+                class="mb-3 block px-2 font-body text-lg font-medium text-white"
+                aria-label="Contact"
+              >Contact</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="hidden lg:block">
+      <ul class="flex items-center">
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Intro"
+          >Intro</a>
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/blog/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Blog"
+          >Blog</a>
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/til/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Today I Learned"
+          >Til</a>
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/uses/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Uses"
+          >Uses</a>
+        </li>
+
+        <li class="group relative mr-6 mb-1">
+          <div class="absolute left-0 bottom-0 z-20 h-0 w-full opacity-75 transition-all group-hover:h-2 group-hover:bg-yellow">
+          </div>
+          <a
+            href="/contact/"
+            class="relative z-30 block px-2 font-body text-lg font-medium text-primary transition-colors group-hover:text-green"
+            aria-label="Contact"
+          >Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+
+      <div>
+        <div class="container mx-auto">
+          <article class="mb-8">
+  <p class="mb-4">
+    
+      <span class="inline-block rounded-full bg-secondary px-2 py-1 font-body text-sm text-white">
+  #Ruby on Rails
+</span>
+
+    
+  </p>
+  <h2 class="block font-body text-3xl font-semibold leading-tight text-primary transition-colors">
+    How Rails Releases Database Connections After Each Web Request
+  </h2>
+  <div class="flex items-center gap-2 py-4 font-body text-grey">
+    <p class="font-light">
+      January 28, 2025
+    </p>
+    <span>//</span>
+    <p class="font-light">
+      3 min read
+    </p>
+  </div>
+  <content class="prose prose max-w-none">
+    <p>Recently, I came across some discussion mentioning that Ruby on Rails checks out a database connection from the connection pool on the first use within a web request and checks it in once the request is complete. While this wasn’t new knowledge to me, I became curious about how it works under the hood.</p>
+
+<p>A quick Google search and a discussion with ChatGPT pointed me to the <code class="language-plaintext highlighter-rouge">ActiveRecord::ConnectionAdapters::ConnectionManagement</code> middleware. However, after inspecting the <a href="https://github.com/rails/rails" target="_blank" rel="nofollow noopener noreferrer">Rails source code on GitHub</a>, I couldn’t find this middleware. Further research confirmed that it was used in older versions of Rails but is no longer present in newer releases.</p>
+
+<p>After digging through the documentation and source code, I found the <code class="language-plaintext highlighter-rouge">ConnectionPool</code> abstract class in <a href="https://github.com/rails/rails/blob/main/activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb" target="_blank" rel="nofollow noopener noreferrer">activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb</a>. Inside this class, I discovered the <a href="https://github.com/rails/rails/blob/main/activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb#L198" target="_blank" rel="nofollow noopener noreferrer"><code class="language-plaintext highlighter-rouge">complete</code></a> method, which calls <code class="language-plaintext highlighter-rouge">pool.release_connection</code>, responsible for checking in the active connection.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+  <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection_handler</span><span class="p">.</span><span class="nf">each_connection_pool</span> <span class="k">do</span> <span class="o">|</span><span class="n">pool</span><span class="o">|</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">connection</span> <span class="o">=</span> <span class="n">pool</span><span class="p">.</span><span class="nf">active_connection?</span><span class="p">)</span>
+      <span class="n">transaction</span> <span class="o">=</span> <span class="n">connection</span><span class="p">.</span><span class="nf">current_transaction</span>
+      <span class="k">if</span> <span class="n">transaction</span><span class="p">.</span><span class="nf">closed?</span> <span class="o">||</span> <span class="o">!</span><span class="n">transaction</span><span class="p">.</span><span class="nf">joinable?</span>
+        <span class="n">pool</span><span class="p">.</span><span class="nf">release_connection</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>This <code class="language-plaintext highlighter-rouge">complete</code> method is <a href="https://github.com/rails/rails/blob/main/activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb#L212" target="_blank" rel="nofollow noopener noreferrer">hooked into</a> an instance of <code class="language-plaintext highlighter-rouge">ActiveSupport::Executor</code> within the Rails application whenever <a href="https://github.com/rails/rails/blob/main/activerecord/lib/active_record/railtie.rb#L291" target="_blank" rel="nofollow noopener noreferrer">ActiveRecord is initialized</a>.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb</span>
+<span class="k">def</span> <span class="nf">install_executor_hooks</span><span class="p">(</span><span class="n">executor</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Executor</span><span class="p">)</span>
+  <span class="n">executor</span><span class="p">.</span><span class="nf">register_hook</span><span class="p">(</span><span class="no">ExecutorHooks</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1"># rails/activerecord/lib/active_record/railtie.rb</span>
+<span class="n">initializer</span> <span class="s2">"active_record.set_executor_hooks"</span> <span class="k">do</span>
+  <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">QueryCache</span><span class="p">.</span><span class="nf">install_executor_hooks</span>
+  <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">AsynchronousQueriesTracker</span><span class="p">.</span><span class="nf">install_executor_hooks</span>
+  <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">ConnectionAdapters</span><span class="o">::</span><span class="no">ConnectionPool</span><span class="p">.</span><span class="nf">install_executor_hooks</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>At this point, I understood that the connection is released back to the pool whenever the application’s executor completes.</p>
+
+<p>The next step in my journey was figuring out when the executor is actually marked as complete. Further investigation into the Rails source code led me to the <a href="https://github.com/rails/rails/blob/main/actionpack/lib/action_dispatch/middleware/executor.rb" target="_blank" rel="nofollow noopener noreferrer"><code class="language-plaintext highlighter-rouge">ActionDispatch::Executor</code> middleware</a>. (I won’t dive into how Rack middleware works in Rails, as <a href="https://guides.rubyonrails.org/rails_on_rack.html" target="_blank" rel="nofollow noopener noreferrer">the official guides cover this extensively</a>.) This middleware marks the <a href="https://github.com/rails/rails/blob/main/actionpack/lib/action_dispatch/middleware/executor.rb#L23" target="_blank" rel="nofollow noopener noreferrer">executor’s state as complete</a> once the web request is processed by the framework.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+  <span class="n">state</span> <span class="o">=</span> <span class="vi">@executor</span><span class="p">.</span><span class="nf">run!</span><span class="p">(</span><span class="ss">reset: </span><span class="kp">true</span><span class="p">)</span>
+  <span class="k">begin</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="vi">@app</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">env</span><span class="p">[</span><span class="s2">"action_dispatch.report_exception"</span><span class="p">]</span>
+      <span class="n">error</span> <span class="o">=</span> <span class="n">env</span><span class="p">[</span><span class="s2">"action_dispatch.exception"</span><span class="p">]</span>
+      <span class="vi">@executor</span><span class="p">.</span><span class="nf">error_reporter</span><span class="p">.</span><span class="nf">report</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="ss">handled: </span><span class="kp">false</span><span class="p">,</span> <span class="ss">source: </span><span class="s2">"application.action_dispatch"</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">returned</span> <span class="o">=</span> <span class="n">response</span> <span class="o">&lt;&lt;</span> <span class="o">::</span><span class="no">Rack</span><span class="o">::</span><span class="no">BodyProxy</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">pop</span><span class="p">)</span> <span class="p">{</span> <span class="n">state</span><span class="p">.</span><span class="nf">complete!</span> <span class="p">}</span>
+  <span class="k">rescue</span> <span class="o">=&gt;</span> <span class="n">error</span>
+    <span class="o">...</span>
+  <span class="k">ensure</span>
+    <span class="n">state</span><span class="p">.</span><span class="nf">complete!</span> <span class="k">unless</span> <span class="n">returned</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>This middleware is automatically included in the framework’s <a href="https://github.com/rails/rails/blob/main/railties/lib/rails/application/default_middleware_stack.rb#L49" target="_blank" rel="nofollow noopener noreferrer">DefaultMiddlewareStack for <code class="language-plaintext highlighter-rouge">Rails::Application</code></a>:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">middleware</span><span class="p">.</span><span class="nf">use</span> <span class="o">::</span><span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Executor</span><span class="p">,</span> <span class="n">app</span><span class="p">.</span><span class="nf">executor</span>
+</code></pre></div></div>
+
+<h3 id="recap">Recap</h3>
+
+<p>At this point, we know:</p>
+
+<ol>
+  <li>The <code class="language-plaintext highlighter-rouge">ActionDispatch::Executor</code> middleware invokes <code class="language-plaintext highlighter-rouge">ActiveSupport::Executor.complete</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">ActiveRecord</code> registers a callback for <code class="language-plaintext highlighter-rouge">ActiveSupport::Executor#complete</code> to release the active database connection back to the pool.</li>
+</ol>
+
+<h2 id="activesupport-executor">ActiveSupport Executor</h2>
+
+<p>The last piece of the puzzle was understanding the role of <code class="language-plaintext highlighter-rouge">ActiveSupport::Executor</code> in this process.</p>
+
+<p>I turned to the official guides again. As the <a href="https://guides.rubyonrails.org/threading_and_code_execution.html#executor" target="_blank" rel="nofollow noopener noreferrer">Executor section in the “Threading and Code Execution in Rails” guide</a> explains:</p>
+
+<blockquote>
+  <p>The Rails Executor separates application code from framework code: any time the framework invokes code you’ve written in your application, it will be wrapped by the Executor.
+The Executor consists of two callbacks: <code class="language-plaintext highlighter-rouge">to_run</code> and <code class="language-plaintext highlighter-rouge">to_complete</code>. The <code class="language-plaintext highlighter-rouge">to_run</code> callback is triggered before application code runs, and <code class="language-plaintext highlighter-rouge">to_complete</code> is called afterward.</p>
+</blockquote>
+
+<p>Interestingly, this section also references the <code class="language-plaintext highlighter-rouge">ActiveRecord::ConnectionAdapters::ConnectionManagement</code> middleware I encountered earlier:</p>
+
+<blockquote>
+  <p>Prior to Rails 5.0, some of these tasks were handled by separate Rack middleware classes (such as <code class="language-plaintext highlighter-rouge">ActiveRecord::ConnectionAdapters::ConnectionManagement</code>), or by directly wrapping code with methods like <code class="language-plaintext highlighter-rouge">ActiveRecord::Base.connection_pool.with_connection</code>. The Executor replaces these with a more unified abstraction.</p>
+</blockquote>
+
+<p>Essentially, application code is wrapped with an executor so that the Rails framework can perform necessary housekeeping tasks like tracking active threads, managing the ActiveRecord query cache, and—most importantly for our discussion—returning active connections back to the pool.</p>
+
+<p>This fits perfectly with my understanding of the difference between a framework and a library: with a library, you call third-party code; with a framework, the framework calls your code. The executor is simply a mechanism that allows Rails to safely invoke your application code while managing its internal dependencies and phases under the hood.</p>
+
+  </content >
+</article>
+
+        </div>
+      </div>
+
+      <footer id="footer" class="container mx-auto">
+  <div class="flex flex-col items-center justify-between border-t border-grey-lighter py-10 sm:flex-row sm:py-12">
+    <p class="font-body font-light text-primary">
+      &copy; 2025 Lucas Mendelowski
+    </p>
+    <div class="flex items-center pt-5 gap-5 sm:pt-0">
+      
+        <a href="https://github.com/lcmen" target="_blank" rel="nofollow noopener noreferrer" target="_blank" aria-label="github">
+          <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-github"></i>
+        </a>
+      
+        <a href="https://www.linkedin.com/in/lucasmendelowski/" target="_blank" rel="nofollow noopener noreferrer" target="_blank" aria-label="linkedin">
+          <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-linkedin"></i>
+        </a>
+      
+        <a href="https://twitter.com/lmendelowski" target="_blank" rel="nofollow noopener noreferrer" target="_blank" aria-label="twitter">
+          <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-twitter"></i>
+        </a>
+      
+    </div>
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>

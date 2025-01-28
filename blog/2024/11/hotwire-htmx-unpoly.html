@@ -188,19 +188,19 @@
     </p>
   </div>
   <content class="prose prose max-w-none">
-    <p>In today’s web development landscape, there are numerous options for building responsive and interactive user interfaces. The most popular choices revolve around JavaScript frameworks for creating single-page applications (SPAs) powered by REST API or GraphQL backends, such as React, Vue.js, or Svelte. As a web developer with extensive experience in the <a href="https://rubyonrails.org/">Ruby on Rails</a> framework for building backends, I have always preferred solutions that leverage server-side rendered views before transitioning to a fully decoupled front-end and back-end architecture.</p>
+    <p>In today’s web development landscape, there are numerous options for building responsive and interactive user interfaces. The most popular choices revolve around JavaScript frameworks for creating single-page applications (SPAs) powered by REST API or GraphQL backends, such as React, Vue.js, or Svelte. As a web developer with extensive experience in the <a href="https://rubyonrails.org/" target="_blank" rel="nofollow noopener noreferrer">Ruby on Rails</a> framework for building backends, I have always preferred solutions that leverage server-side rendered views before transitioning to a fully decoupled front-end and back-end architecture.</p>
 
 <p>Currently, the most popular options for building interactive UIs with server-side rendering are:</p>
 
 <ul>
-  <li><a href="https://hotwired.dev/">Hotwire</a></li>
-  <li><a href="https://htmx.org/">HTMX</a></li>
-  <li><a href="https://unpoly.com/">Unpoly</a></li>
+  <li><a href="https://hotwired.dev/" target="_blank" rel="nofollow noopener noreferrer">Hotwire</a></li>
+  <li><a href="https://htmx.org/" target="_blank" rel="nofollow noopener noreferrer">HTMX</a></li>
+  <li><a href="https://unpoly.com/" target="_blank" rel="nofollow noopener noreferrer">Unpoly</a></li>
 </ul>
 
 <p>In this article, I will compare these libraries in the context of a small application I recently developed. As an engineer with an interest in understanding the underlying mechanisms, I grew tired of reading various discussions on Reddit and HackerNews. I decided to roll up my sleeves and build a simple TODO application (because there can never be enough of those, right?) to compare these libraries based on typical web application requirements such as partial updates, form validation, and modals.</p>
 
-<p>The source code for the demo application is available on <a href="https://github.com/lcmen/hotwire-htmx-unpoly">GitHub</a>, and the application can be viewed in the browser <a href="https://hotwire-htmx-unpoly.onrender.com/">here</a>. Please note that it is hosted on a free Render.io dyno, so it may take approximately 50 seconds to boot on the first request, and the database resets on every cold boot.</p>
+<p>The source code for the demo application is available on <a href="https://github.com/lcmen/hotwire-htmx-unpoly" target="_blank" rel="nofollow noopener noreferrer">GitHub</a>, and the application can be viewed in the browser <a href="https://hotwire-htmx-unpoly.onrender.com/" target="_blank" rel="nofollow noopener noreferrer">here</a>. Please note that it is hosted on a free Render.io dyno, so it may take approximately 50 seconds to boot on the first request, and the database resets on every cold boot.</p>
 
 <h2 id="introduction-to-the-contenders">Introduction to the Contenders</h2>
 
@@ -208,12 +208,12 @@
 
 <h3 id="hotwire">Hotwire</h3>
 
-<p><a href="https://hotwired.dev/">Hotwire</a> was developed by 37 Signals to replace Turbolinks with a more modern alternative providing additional capabilities. It comprises three elements:</p>
+<p><a href="https://hotwired.dev/" target="_blank" rel="nofollow noopener noreferrer">Hotwire</a> was developed by 37 Signals to replace Turbolinks with a more modern alternative providing additional capabilities. It comprises three elements:</p>
 
 <ul>
-  <li><a href="https://turbo.hotwired.dev/">Turbo</a> - the successor to <a href="https://github.com/turbolinks/turbolinks">Turbolinks</a></li>
-  <li><a href="https://stimulus.hotwired.dev/">Stimulus.js</a> - a JavaScript framework that uses <code class="language-plaintext highlighter-rouge">data</code> attributes as a source of truth to enhance HTML</li>
-  <li><a href="https://native.hotwired.dev/">Hotwire Native</a> - a framework for building native mobile apps using the same HTML and CSS as web applications</li>
+  <li><a href="https://turbo.hotwired.dev/" target="_blank" rel="nofollow noopener noreferrer">Turbo</a> - the successor to <a href="https://github.com/turbolinks/turbolinks" target="_blank" rel="nofollow noopener noreferrer">Turbolinks</a></li>
+  <li><a href="https://stimulus.hotwired.dev/" target="_blank" rel="nofollow noopener noreferrer">Stimulus.js</a> - a JavaScript framework that uses <code class="language-plaintext highlighter-rouge">data</code> attributes as a source of truth to enhance HTML</li>
+  <li><a href="https://native.hotwired.dev/" target="_blank" rel="nofollow noopener noreferrer">Hotwire Native</a> - a framework for building native mobile apps using the same HTML and CSS as web applications</li>
 </ul>
 
 <p>In this article, I will focus on the first two packages, as I have no experience with building mobile applications.</p>
@@ -248,7 +248,7 @@
 
 <h3 id="htmx">HTMX</h3>
 
-<p><a href="https://htmx.org/">HTMX</a> is a continuation of the idea seeded by <a href="https://intercoolerjs.org/">Intercooler.js</a> - hypermedia-powered applications. In simple terms, it means using HTML <code class="language-plaintext highlighter-rouge">data</code> attributes to extend the default request-response capabilities of HTTP requests. Intercooler was powered by <a href="https://jquery.com/">jQuery</a>, but as browsers adopted the latest JavaScript standards, the HTMX author rewrote it using vanilla JavaScript, making the core leaner with a smaller set of attributes while leaving additional features to extensions.</p>
+<p><a href="https://htmx.org/" target="_blank" rel="nofollow noopener noreferrer">HTMX</a> is a continuation of the idea seeded by <a href="https://intercoolerjs.org/" target="_blank" rel="nofollow noopener noreferrer">Intercooler.js</a> - hypermedia-powered applications. In simple terms, it means using HTML <code class="language-plaintext highlighter-rouge">data</code> attributes to extend the default request-response capabilities of HTTP requests. Intercooler was powered by <a href="https://jquery.com/" target="_blank" rel="nofollow noopener noreferrer">jQuery</a>, but as browsers adopted the latest JavaScript standards, the HTMX author rewrote it using vanilla JavaScript, making the core leaner with a smaller set of attributes while leaving additional features to extensions.</p>
 
 <p>HTMX relies on specifying UI behavior using various <code class="language-plaintext highlighter-rouge">hx-</code> data attributes, e.g.</p>
 
@@ -264,13 +264,13 @@
 <span class="nt">&lt;/div&gt;</span>
 </code></pre></div></div>
 
-<p>Besides <code class="language-plaintext highlighter-rouge">data</code> driven behaviors, HTMX includes basic JavaScript API for the most common operations (updating CSS classes, triggering and handling events, etc.). It’s very simple so when more JavaScript interactivity is needed, developers usually reach for <a href="https://alpinejs.dev/">Alpine.js</a> framework.</p>
+<p>Besides <code class="language-plaintext highlighter-rouge">data</code> driven behaviors, HTMX includes basic JavaScript API for the most common operations (updating CSS classes, triggering and handling events, etc.). It’s very simple so when more JavaScript interactivity is needed, developers usually reach for <a href="https://alpinejs.dev/" target="_blank" rel="nofollow noopener noreferrer">Alpine.js</a> framework.</p>
 
-<p>HTMX also includes a rich <a href="https://htmx.org/extensions/">extensions inventory</a> to make the UI even snappier by taking advantage of background preloads, morphing, merging <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> tags, etc.</p>
+<p>HTMX also includes a rich <a href="https://htmx.org/extensions/" target="_blank" rel="nofollow noopener noreferrer">extensions inventory</a> to make the UI even snappier by taking advantage of background preloads, morphing, merging <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> tags, etc.</p>
 
 <h3 id="unpoly">Unpoly</h3>
 
-<p><a href="https://unpoly.com/">Unpoly</a> was created at <a href="https://makandra.de">Makandra</a> as a response to the increasing complexity of the frontend tools. At the beginning, it relied on jQuery and was written in CoffeeScript but with version 2, the author dropped jQuery from its dependencies and rewrote the framework using vanilla JavaScript.</p>
+<p><a href="https://unpoly.com/" target="_blank" rel="nofollow noopener noreferrer">Unpoly</a> was created at <a href="https://makandra.de" target="_blank" rel="nofollow noopener noreferrer">Makandra</a> as a response to the increasing complexity of the frontend tools. At the beginning, it relied on jQuery and was written in CoffeeScript but with version 2, the author dropped jQuery from its dependencies and rewrote the framework using vanilla JavaScript.</p>
 
 <p>Similar to HTMX, Unpoly also relies on HTMX <code class="language-plaintext highlighter-rouge">data</code> attributes (specifically <code class="language-plaintext highlighter-rouge">up-</code> ones) for defining behaviors. On the other hand it’s more implicit thanks to its convention that can be customized through multiple configuration options, e.g.</p>
 
@@ -280,7 +280,7 @@
 <span class="nx">up</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">submitSelectors</span><span class="p">.</span><span class="nf">push</span><span class="p">([</span><span class="dl">'</span><span class="s1">form</span><span class="dl">'</span><span class="p">])</span>
 </code></pre></div></div>
 
-<p>Also, in addition to manually defining targets for each Ajax interaction, Unpoly supports the concept of <a href="https://unpoly.com/up.layer">layers</a>. These layers (root, modal, drawer, popup, and cover) defines how new content should be loaded to the existing page, e.g.</p>
+<p>Also, in addition to manually defining targets for each Ajax interaction, Unpoly supports the concept of <a href="https://unpoly.com/up.layer" target="_blank" rel="nofollow noopener noreferrer">layers</a>. These layers (root, modal, drawer, popup, and cover) defines how new content should be loaded to the existing page, e.g.</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/contact"</span> <span class="na">up-layer=</span><span class="s">"modal"</span><span class="nt">&gt;</span>Contact me<span class="nt">&lt;/a&gt;</span>
 <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/menu"</span> <span class="na">up-layer=</span><span class="s">"drawer"</span><span class="nt">&gt;</span>Menu<span class="nt">&lt;/a&gt;</span>
@@ -292,7 +292,7 @@
 
 <h2 id="todo-application">Todo Application</h2>
 
-<p>We will evaluate each of the libraries in the context of a simple <a href="https://github.com/lcmen/hotwire-htmx-unpoly">TODO application</a> that I built recently. We will look at each version in terms of supporting the following features:</p>
+<p>We will evaluate each of the libraries in the context of a simple <a href="https://github.com/lcmen/hotwire-htmx-unpoly" target="_blank" rel="nofollow noopener noreferrer">TODO application</a> that I built recently. We will look at each version in terms of supporting the following features:</p>
 
 <ol>
   <li>Loading form in modal</li>
@@ -399,7 +399,7 @@
 <span class="nx">up</span><span class="p">.</span><span class="nx">layer</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">modal</span><span class="p">.</span><span class="nx">closeDuration</span> <span class="o">=</span> <span class="mi">500</span>
 </code></pre></div></div>
 
-<p>Unpoly overlays support a range of <a href="https://unpoly.com/closing-overlays#close-conditions">close conditions</a>, including redirecting to a specific URL, making them particularly suitable for use with form submissions.</p>
+<p>Unpoly overlays support a range of <a href="https://unpoly.com/closing-overlays#close-conditions" target="_blank" rel="nofollow noopener noreferrer">close conditions</a>, including redirecting to a specific URL, making them particularly suitable for use with form submissions.</p>
 
 <h3 id="server-side-form-validation">Server side form validation</h3>
 
@@ -489,15 +489,15 @@
     </p>
     <div class="flex items-center pt-5 gap-5 sm:pt-0">
       
-        <a href="https://github.com/lcmen" target="_blank" aria-label="github">
+        <a href="https://github.com/lcmen" target="_blank" rel="nofollow noopener noreferrer" target="_blank" aria-label="github">
           <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-github"></i>
         </a>
       
-        <a href="https://www.linkedin.com/in/lucasmendelowski/" target="_blank" aria-label="linkedin">
+        <a href="https://www.linkedin.com/in/lucasmendelowski/" target="_blank" rel="nofollow noopener noreferrer" target="_blank" aria-label="linkedin">
           <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-linkedin"></i>
         </a>
       
-        <a href="https://twitter.com/lmendelowski" target="_blank" aria-label="twitter">
+        <a href="https://twitter.com/lmendelowski" target="_blank" rel="nofollow noopener noreferrer" target="_blank" aria-label="twitter">
           <i class="text-4xl text-primary hover:text-secondary transition-colors bx bxl-twitter"></i>
         </a>
       
